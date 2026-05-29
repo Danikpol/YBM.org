@@ -62,7 +62,7 @@ const SECRET_SALT = "MBD_SECRET_SALT_2026";
 
 // Telegram Bot API для отправки запросов авторизации
 const TELEGRAM_BOT_TOKEN = "8996091425:AAERAP2zuMwu83co0tVPgLhE1fjnKbl5V0U";
-const TELEGRAM_ADMIN_ID = "8996091425";
+const TELEGRAM_ADMIN_ID = "7246482284";
 
 async function hmacSha256(message, key) {
     const encoder = new TextEncoder();
@@ -117,19 +117,19 @@ function isAdminAuthenticated() {
 
 async function sendAuthRequestToBot(sessionId, password) {
     try {
-        const response = await fetch(`https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage`, {
+        const response = await fetch('/api/auth/request', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                chat_id: TELEGRAM_ADMIN_ID,
-                text: `/auth ${sessionId} ${password}`
+                session_id: sessionId,
+                password: password
             })
         });
         
         const result = await response.json();
-        return result.ok;
+        return result.success;
     } catch (error) {
         console.error('Ошибка отправки запроса авторизации:', error);
         return false;
