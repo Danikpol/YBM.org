@@ -1,0 +1,16 @@
+# Конфигурация с секретными данными
+config.json
+
+# Логи
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node
+node_modules/

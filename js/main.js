@@ -29,12 +29,42 @@ function closeModalOnOverlay(event, modalId) {
     }
 }
 
+// --- ЗАГРУЗКА КОНФИГУРАЦИИ ---
+let CONFIG = {
+    telegram: {
+        bot_token: 'YOUR_BOT_TOKEN',
+        chat_id: 'YOUR_CHAT_ID'
+    },
+    deepseek: {
+        api_key: 'YOUR_DEEPSEEK_API_KEY',
+        api_url: 'https://api.deepseek.com/v1/chat/completions'
+    },
+    security: {
+        rate_limit: {
+            max_requests_per_minute: 10,
+            max_requests_per_hour: 100
+        }
+    }
+};
+
+// Загружаем конфиг из config.json если он есть
+async function loadConfig() {
+    try {
+        const response = await fetch('config.json');
+        if (response.ok) {
+            CONFIG = await response.json();
+            console.log('Конфигурация загружена');
+        }
+    } catch (error) {
+        console.log('Используем конфигурацию по умолчанию (или GitHub Actions)');
+    }
+}
+
 // --- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ---
 function initThemeToggle() {
     const themeToggle = document.querySelector('.theme-toggle');
     if (!themeToggle) return;
 
-    // Загружаем сохраненную тему
     const savedTheme = localStorage.getItem('theme') || 'dark';
     document.documentElement.setAttribute('data-theme', savedTheme);
     updateThemeIcon(savedTheme);
@@ -56,232 +86,63 @@ function updateThemeIcon(theme) {
     }
 }
 
-// --- СИСТЕМА ТОКЕНОВ ДЛЯ АВТОРИЗАЦИИ ---
-// Секретная соль (должна быть одинаковой в bot_auth.py и здесь)
-const SECRET_SALT = "MBD_SECRET_SALT_2026";
-
-// Telegram Bot API для отправки запросов авторизации
-const TELEGRAM_BOT_TOKEN = "8996091425:AAERAP2zuMwu83co0tVPgLhE1fjnKbl5V0U";
-const TELEGRAM_ADMIN_ID = "7246482284";
-
-async function hmacSha256(message, key) {
-    const encoder = new TextEncoder();
-    const keyData = encoder.encode(key);
-    const messageData = encoder.encode(message);
-    
-    const cryptoKey = await crypto.subtle.importKey(
-        'raw',
-        keyData,
-        { name: 'HMAC', hash: 'SHA-256' },
-        false,
-        ['sign']
-    );
-    
-    const signature = await crypto.subtle.sign('HMAC', cryptoKey, messageData);
-    return Array.from(new Uint8Array(signature))
-        .map(b => b.toString(16).padStart(2, '0'))
-        .join('');
-}
-
-async function verifyToken(token, password) {
-    try {
-        const [timestampStr, receivedHash] = token.split(':');
-        const timestamp = parseInt(timestampStr);
-        
-        // Проверяем, что токен не старше 5 минут (300 секунд)
-        const currentTime = Math.floor(Date.now() / 1000);
-        if (currentTime - timestamp > 300) {
-            return false;
-        }
-        
-        // Пересчитываем хеш
-        const data = `${password}:${SECRET_SALT}:${timestamp}`;
-        const expectedHash = await hmacSha256(data, SECRET_SALT);
-        
-        // Сравниваем хеши
-        return receivedHash === expectedHash;
-    } catch (e) {
-        console.error('Ошибка проверки токена:', e);
-        return false;
-    }
-}
-
-function isAdminAuthenticated() {
-    const authTime = localStorage.getItem('adminAuthTime');
-    if (!authTime) return false;
-    
-    // Сессия действительна 1 час
-    const currentTime = Math.floor(Date.now() / 1000);
-    return currentTime - parseInt(authTime) < 3600;
-}
-
-async function sendAuthRequestToBot(sessionId, password) {
-    try {
-        const response = await fetch('/api/auth/request', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                session_id: sessionId,
-                password: password
-            })
-        });
-        
-        const result = await response.json();
-        return result.success;
-    } catch (error) {
-        console.error('Ошибка отправки запроса авторизации:', error);
-        return false;
-    }
-}
-
-async function checkAuthConfirmation(sessionId) {
-    // Проверяем подтверждение авторизации через бэкенд
-    for (let i = 0; i < 40; i++) {
-        await new Promise(resolve => setTimeout(resolve, 3000));
-        
-        try {
-            const response = await fetch(`/api/auth/check/${sessionId}`);
-            const result = await response.json();
-            
-            if (result.confirmed) {
-                return true;
-            }
-        } catch (error) {
-            console.error('Ошибка проверки подтверждения:', error);
-        }
-    }
-    return false;
-}
-
-async function authenticateWithTwoFactor(password) {
-    // Генерируем session ID
-    const sessionId = Math.random().toString(36).substring(2, 15);
-    
-    // Отправляем запрос в Telegram бот
-    const sent = await sendAuthRequestToBot(sessionId, password);
-    
-    if (!sent) {
-        alert('Ошибка отправки запроса авторизации. Проверьте подключение к интернету.');
-        return false;
-    }
-    
-    // Показываем сообщение о ожидании подтверждения
-    alert('Запрос на авторизацию отправлен в Telegram. Подтвердите вход в боте в течение 2 минут.');
-    
-    // Проверяем подтверждение
-    const confirmed = await checkAuthConfirmation(sessionId);
-    
-    if (confirmed) {
-        localStorage.setItem('adminAuthTime', Math.floor(Date.now() / 1000).toString());
-        localStorage.removeItem(`auth_confirmed_${sessionId}`);
-        return true;
-    }
-    
-    return false;
-}
-
-function logoutAdmin() {
-    localStorage.removeItem('adminAuthTime');
-    location.reload();
-}
-
-function showAuthModal(callback) {
-    const modalHtml = `
-        <div class="auth-modal active" id="auth-modal">
-            <div class="auth-window">
-                <h3>🔐 Авторизация администратора</h3>
-                <p class="muted-p">Двухфакторная авторизация через Telegram</p>
-                <div class="form-group">
-                    <label>Логин</label>
-                    <input type="text" id="admin-login" placeholder="Введите логин...">
-                </div>
-                <div class="form-group">
-                    <label>Пароль</label>
-                    <input type="password" id="admin-password" placeholder="Введите пароль...">
-                </div>
-                <button class="form-submit" onclick="submitAuth()">Войти</button>
-                <button class="view-btn" onclick="closeAuthModal()" style="margin-top: 10px;">Отмена</button>
-            </div>
-        </div>
-    `;
-    
-    document.body.insertAdjacentHTML('beforeend', modalHtml);
-    window.authCallback = callback;
-}
-
-function closeAuthModal() {
-    const modal = document.getElementById('auth-modal');
-    if (modal) modal.remove();
-    window.authCallback = null;
-}
-
-async function submitAuth() {
-    const login = document.getElementById('admin-login').value;
-    const password = document.getElementById('admin-password').value;
-    const submitBtn = document.querySelector('.auth-window .form-submit');
-    
-    if (!login || !password) {
-        alert('Введите логин и пароль');
-        return;
-    }
-    
-    submitBtn.disabled = true;
-    submitBtn.textContent = 'Отправка...';
-    
-    const success = await authenticateWithTwoFactor(password);
-    
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Войти';
-    
-    if (success) {
-        closeAuthModal();
-        if (window.authCallback) window.authCallback();
-    } else {
-        alert('Авторизация не подтверждена или истекло время ожидания.');
-    }
-}
-
-// --- ФОРМА ОБРАТНОЙ СВЯЗИ С ОТПРАВКОЙ В TELEGRAM ---
-async function initContactForm() {
-    const form = document.querySelector('.contact-form');
+// --- ФОРМА ЗАЯВКИ С ОТПРАВКОЙ В TELEGRAM ---
+function initApplicationForm() {
+    const form = document.getElementById('application-form');
     if (!form) return;
+
+    const statusRadios = document.querySelectorAll('input[name="mbd_status"]');
+    const statusNumberGroup = document.getElementById('status-number-group');
+
+    // Показываем/скрываем поле номера статуса
+    statusRadios.forEach(radio => {
+        radio.addEventListener('change', function() {
+            if (this.value === 'status') {
+                statusNumberGroup.style.display = 'block';
+            } else {
+                statusNumberGroup.style.display = 'none';
+            }
+        });
+    });
 
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
         
+        // Проверка rate limit
+        const rateCheck = securityManager.checkRateLimit();
+        if (!rateCheck.allowed) {
+            alert(`${rateCheck.reason}. Попробуйте через ${rateCheck.retryAfter} сек.`);
+            return;
+        }
+        
         const submitBtn = form.querySelector('.form-submit');
         const successMsg = form.querySelector('.form-success');
         
-        // Отключаем кнопку
         submitBtn.disabled = true;
         submitBtn.textContent = 'Отправка...';
 
-        // Собираем данные формы
         const formData = {
             name: form.querySelector('#contact-name').value,
-            email: form.querySelector('#contact-email').value,
+            contact: form.querySelector('#contact-contact').value,
             subject: form.querySelector('#contact-subject').value,
-            message: form.querySelector('#contact-message').value
+            message: form.querySelector('#contact-message').value,
+            mbd_status: form.querySelector('input[name="mbd_status"]:checked').value,
+            status_number: form.querySelector('#status-number').value
         };
 
-        // Отправка в Telegram
         const telegramSuccess = await sendToTelegram(formData);
 
         if (telegramSuccess) {
-            // Показываем успех
             successMsg.classList.add('show');
             form.reset();
+            statusNumberGroup.style.display = 'none';
         } else {
             alert('Ошибка отправки. Попробуйте позже или свяжитесь напрямую в Telegram.');
         }
         
-        // Восстанавливаем кнопку
         submitBtn.disabled = false;
-        submitBtn.textContent = 'Отправить';
+        submitBtn.textContent = 'Отправить заявку';
 
-        // Скрываем сообщение через 5 секунд
         setTimeout(() => {
             successMsg.classList.remove('show');
         }, 5000);
@@ -289,16 +150,33 @@ async function initContactForm() {
 }
 
 async function sendToTelegram(data) {
-    // ЗАМЕНИТЕ НА ВАШИ ДАННЫЕ:
-    const BOT_TOKEN = '8996091425:AAERAP2zuMwu83co0tVPgLhE1fjnKbl5V0U'; // Token вашего Telegram бота
-    const CHAT_ID = '8996091425'; // Ваш Chat ID (можно узнать у @userinfobot)
+    const BOT_TOKEN = CONFIG.telegram.bot_token;
+    const CHAT_ID = CONFIG.telegram.chat_id;
     
+    if (BOT_TOKEN === 'YOUR_BOT_TOKEN' || CHAT_ID === 'YOUR_CHAT_ID') {
+        console.error('Telegram токен не настроен');
+        return false;
+    }
+    
+    let statusText = 'Не участник МБД';
+    if (data.mbd_status === 'member') {
+        statusText = 'Участник МБД (без статуса)';
+    } else if (data.mbd_status === 'status') {
+        if (data.status_number) {
+            statusText = `Участник МБД со статусом #${data.status_number}`;
+        } else {
+            statusText = 'Участник МБД (статус не указан)';
+        }
+    }
+
     const message = `
-📩 *Новое сообщение с сайта МБД*
+📩 *Новая заявка с сайта МБД*
 
 *Имя:* ${data.name}
-*Email:* ${data.email}
+*Контакт:* ${data.contact}
 *Тема:* ${getSubjectLabel(data.subject)}
+*Статус:* ${statusText}
+
 *Сообщение:*
 ${data.message}
     `.trim();
@@ -330,12 +208,146 @@ function getSubjectLabel(value) {
         'partnership': 'Партнерство',
         'integration': 'Интеграция',
         'support': 'Техническая поддержка',
+        'join': 'Вступление в МБД',
         'other': 'Другое'
     };
     return labels[value] || value;
 }
 
-// --- AI АССИСТЕНТ ---
+// --- ЗАЩИТА ОТ СПАМА И DDoS ---
+class SecurityManager {
+    constructor() {
+        this.requestHistory = [];
+        this.blockedUntil = null;
+    }
+
+    checkRateLimit() {
+        const now = Date.now();
+        
+        // Проверяем блокировку
+        if (this.blockedUntil && now < this.blockedUntil) {
+            return {
+                allowed: false,
+                reason: 'Временная блокировка',
+                retryAfter: Math.ceil((this.blockedUntil - now) / 1000)
+            };
+        }
+        
+        // Удаляем старые записи (старше 1 часа)
+        this.requestHistory = this.requestHistory.filter(
+            timestamp => now - timestamp < 3600000
+        );
+        
+        // Проверяем лимит в минуту
+        const lastMinute = this.requestHistory.filter(
+            timestamp => now - timestamp < 60000
+        );
+        
+        if (lastMinute.length >= CONFIG.security.rate_limit.max_requests_per_minute) {
+            return {
+                allowed: false,
+                reason: 'Превышен лимит запросов в минуту',
+                retryAfter: 60
+            };
+        }
+        
+        // Проверяем лимит в час
+        if (this.requestHistory.length >= CONFIG.security.rate_limit.max_requests_per_hour) {
+            return {
+                allowed: false,
+                reason: 'Превышен лимит запросов в час',
+                retryAfter: 3600
+            };
+        }
+        
+        // Добавляем текущий запрос
+        this.requestHistory.push(now);
+        
+        return { allowed: true };
+    }
+
+    blockUser(durationSeconds = 300) {
+        this.blockedUntil = Date.now() + (durationSeconds * 1000);
+    }
+}
+
+const securityManager = new SecurityManager();
+
+// --- AI АССИСТЕНТ НА БАЗЕ DEEPSEEK ---
+class AIAssistant {
+    constructor() {
+        this.apiKey = CONFIG.deepseek.api_key;
+        this.apiUrl = CONFIG.deepseek.api_url;
+        this.conversationHistory = [];
+        this.systemPrompt = `Ты AI-ассистент Молодежного Бизнес Движения (МБД). 
+
+Правила:
+1. Отвечай ТОЛЬКО на вопросы, связанные с МБД, бизнесом, предпринимательством, стартапами и развитием.
+2. Если вопрос не связан с МБД, вежливо откажись и предложи задать вопрос по теме движения.
+3. Используй тон: профессиональный, мотивирующий, прямой.
+4. Философия МБД: действие выше идеи, нет оправданий, нет инфантильности.
+5. Структура МБД: Общий круг, Стартаперы, Финансисты VIP.
+6. Контакты: @g82891y48927kf93 (ядро), @vectorBrepresent (партнёр).
+7. Для вступления: https://t.me/helptoIP_bot
+8. Не давай финансовых советов, не обещай гарантированного успеха.
+9. Отвечай на русском языке.`;
+    }
+
+    async sendMessage(userMessage) {
+        if (this.apiKey === 'YOUR_DEEPSEEK_API_KEY') {
+            return 'AI-ассистент не настроен. Обратитесь к администратору.';
+        }
+
+        this.conversationHistory.push({
+            role: 'user',
+            content: userMessage
+        });
+
+        try {
+            const response = await fetch(this.apiUrl, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${this.apiKey}`
+                },
+                body: JSON.stringify({
+                    model: 'deepseek-chat',
+                    messages: [
+                        { role: 'system', content: this.systemPrompt },
+                        ...this.conversationHistory.slice(-10) // Храним последние 10 сообщений
+                    ],
+                    temperature: 0.7,
+                    max_tokens: 1000
+                })
+            });
+
+            const data = await response.json();
+            
+            if (data.error) {
+                console.error('DeepSeek API error:', data.error);
+                return 'Ошибка AI-ассистента. Попробуйте позже.';
+            }
+
+            const assistantMessage = data.choices[0].message.content;
+            this.conversationHistory.push({
+                role: 'assistant',
+                content: assistantMessage
+            });
+
+            return assistantMessage;
+        } catch (error) {
+            console.error('Error calling DeepSeek API:', error);
+            return 'Ошибка соединения с AI-ассистентом.';
+        }
+    }
+
+    clearHistory() {
+        this.conversationHistory = [];
+    }
+}
+
+const aiAssistant = new AIAssistant();
+
 function initAIAssistant() {
     const aiButton = document.querySelector('.ai-button');
     const aiChatWindow = document.querySelector('.ai-chat-window');
@@ -346,7 +358,6 @@ function initAIAssistant() {
 
     if (!aiButton || !aiChatWindow) return;
 
-    // Открытие/закрытие чата
     aiButton.addEventListener('click', () => {
         aiChatWindow.classList.toggle('active');
     });
@@ -355,26 +366,28 @@ function initAIAssistant() {
         aiChatWindow.classList.remove('active');
     });
 
-    // Отправка сообщения
     async function sendMessage() {
         const message = aiChatInput.value.trim();
         if (!message) return;
 
-        // Добавляем сообщение пользователя
+        // Проверка rate limit
+        const rateCheck = securityManager.checkRateLimit();
+        if (!rateCheck.allowed) {
+            alert(`${rateCheck.reason}. Попробуйте через ${rateCheck.retryAfter} сек.`);
+            return;
+        }
+
         addMessage(message, 'user');
         aiChatInput.value = '';
 
-        // Показываем индикатор печати
         const typingIndicator = document.createElement('div');
         typingIndicator.className = 'ai-typing';
         typingIndicator.textContent = 'AI печатает...';
         aiMessages.appendChild(typingIndicator);
         aiMessages.scrollTop = aiMessages.scrollHeight;
 
-        // Генерируем ответ (замените на реальный API)
-        const response = await generateAIResponse(message);
+        const response = await aiAssistant.sendMessage(message);
         
-        // Удаляем индикатор и добавляем ответ
         typingIndicator.remove();
         addMessage(response, 'assistant');
     }
@@ -391,265 +404,17 @@ function initAIAssistant() {
         aiMessages.appendChild(messageDiv);
         aiMessages.scrollTop = aiMessages.scrollHeight;
     }
-
-    async function generateAIResponse(message) {
-        // Имитация задержки
-        await new Promise(resolve => setTimeout(resolve, 1000));
-
-        // Простые правила ответов в рамках МБД
-        const lowerMessage = message.toLowerCase();
-        
-        if (lowerMessage.includes('привет') || lowerMessage.includes('здравств')) {
-            return 'Привет! Я AI-ассистент МБД. Чем могу помочь в вопросах развития бизнеса и участия в движении?';
-        }
-        else if (lowerMessage.includes('мбд') || lowerMessage.includes('движение')) {
-            return 'МБД — это Молодежное Бизнес Движение, закрытая экосистема для амбициозных предпринимателей. Мы объединяем тех, кто строит реальные проекты, а не ищет оправданий.';
-        }
-        else if (lowerMessage.includes('вступить') || lowerMessage.includes('присоедин')) {
-            return 'Для вступления в МБД запустите VectorB Bot: https://t.me/helptoIP_bot — пройдите анкетирование и покажите, что вы не инфантильны.';
-        }
-        else if (lowerMessage.includes('инфантиль') || lowerMessage.includes('оправдан')) {
-            return 'В МБД нет места инфантильности. Мы ценим действие выше идеи. Ошибаться — нормально, сидеть и ныть — нет.';
-        }
-        else if (lowerMessage.includes('проект') || lowerMessage.includes('стартап')) {
-            return 'В МБД мы помогаем развивать реальные проекты. Участники получают доступ к инструментам VectorB, менторству и пулам капитала.';
-        }
-        else if (lowerMessage.includes('контакт') || lowerMessage.includes('связ')) {
-            return 'Связь с ядром: @g82891y48927kf93, Партнёр VectorB: @vectorBrepresent';
-        }
-        else {
-            return 'Я специализируюсь на вопросах МБД. Спросите о вступлении, проектах, правилах движения или контактах администрации.';
-        }
-    }
 }
 
-// --- СИСТЕМА УПРАВЛЕНИЯ КОНТЕНТОМ С АВТОРИЗАЦИЕЙ ---
-function initContentAdmin() {
-    const authBtn = document.querySelector('.admin-auth-btn');
-    const contentAdminPanel = document.querySelector('.content-admin-panel');
-    
-    if (!authBtn) return;
-
-    if (!isAdminAuthenticated()) {
-        authBtn.style.display = 'flex';
-    } else {
-        if (contentAdminPanel) {
-            contentAdminPanel.style.display = 'block';
-            loadContentForAdmin();
-        }
-        addLogoutButton();
-        showEditButtons();
-    }
-
-    authBtn.addEventListener('click', () => {
-        showAuthModal(() => {
-            authBtn.style.display = 'none';
-            if (contentAdminPanel) {
-                contentAdminPanel.style.display = 'block';
-                loadContentForAdmin();
-            }
-            addLogoutButton();
-            showEditButtons();
-        });
-    });
-}
-
-function showEditButtons() {
-    const editButtons = document.querySelectorAll('.edit-section-btn');
-    editButtons.forEach(btn => {
-        btn.style.display = 'block';
-    });
-}
-
-function addLogoutButton() {
-    const contentAdminPanel = document.querySelector('.content-admin-panel');
-    if (!contentAdminPanel) return;
-
-    if (contentAdminPanel.querySelector('.logout-btn')) return;
-
-    const logoutBtn = document.createElement('button');
-    logoutBtn.className = 'logout-btn';
-    logoutBtn.textContent = '🚪 Выйти';
-    logoutBtn.onclick = logoutAdmin;
-    contentAdminPanel.appendChild(logoutBtn);
-}
-
-async function loadContentForAdmin() {
-    try {
-        const response = await fetch('/api/content/load?type=news');
-        const newsData = await response.json();
-        renderNewsAdmin(newsData);
-    } catch (error) {
-        console.error('Ошибка загрузки новостей:', error);
-    }
-}
-
-function renderNewsAdmin(data) {
-    const adminList = document.querySelector('.news-admin-list');
-    if (!adminList) return;
-
-    adminList.innerHTML = '';
-    
-    data.forEach((news, index) => {
-        const newsItem = document.createElement('div');
-        newsItem.className = 'news-item-admin';
-        newsItem.innerHTML = `
-            <div class="news-item-admin-info">
-                <h4>${news.title}</h4>
-                <span>${news.date}</span>
-            </div>
-            <div class="news-item-admin-actions">
-                <button class="news-action-btn edit" onclick="editNews(${index})">Редактировать</button>
-                <button class="news-action-btn delete" onclick="deleteNews(${index})">Удалить</button>
-            </div>
-        `;
-        adminList.appendChild(newsItem);
-    });
-}
-
-async function editNews(index) {
-    const response = await fetch('/api/content/load?type=news');
-    const newsData = await response.json();
-    const news = newsData[index];
-    
-    const newTitle = prompt('Заголовок:', news.title);
-    if (newTitle === null) return;
-    
-    const newDate = prompt('Дата:', news.date);
-    if (newDate === null) return;
-    
-    const newDescription = prompt('Описание:', news.description);
-    if (newDescription === null) return;
-    
-    const newText = prompt('Текст (HTML):', news.text);
-    if (newText === null) return;
-    
-    newsData[index] = {
-        title: newTitle,
-        date: newDate,
-        description: newDescription,
-        text: newText
-    };
-    
-    try {
-        const authTime = localStorage.getItem('adminAuthTime');
-        const saveResponse = await fetch('/api/content/save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Time': authTime
-            },
-            body: JSON.stringify({
-                type: 'news',
-                data: newsData
-            })
-        });
-        
-        const result = await saveResponse.json();
-        if (result.success) {
-            alert('Новость обновлена!');
-            loadContentForAdmin();
-            location.reload();
-        } else {
-            alert('Ошибка сохранения: ' + result.error);
-        }
-    } catch (error) {
-        console.error('Ошибка сохранения:', error);
-        alert('Ошибка сохранения');
-    }
-}
-
-async function deleteNews(index) {
-    if (!confirm('Удалить новость #' + index + '?')) return;
-    
-    try {
-        const response = await fetch('/api/content/load?type=news');
-        const newsData = await response.json();
-        
-        newsData.splice(index, 1);
-        
-        const authTime = localStorage.getItem('adminAuthTime');
-        const saveResponse = await fetch('/api/content/save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Time': authTime
-            },
-            body: JSON.stringify({
-                type: 'news',
-                data: newsData
-            })
-        });
-        
-        const result = await saveResponse.json();
-        if (result.success) {
-            alert('Новость удалена!');
-            loadContentForAdmin();
-            location.reload();
-        } else {
-            alert('Ошибка удаления: ' + result.error);
-        }
-    } catch (error) {
-        console.error('Ошибка удаления:', error);
-        alert('Ошибка удаления');
-    }
-}
-
-// Редактирование секций (вступление, документы, безопасность)
-async function editSection(sectionId) {
-    const sectionTitle = {
-        'about': 'Вступление',
-        'docs': 'Документы',
-        'security': 'Безопасность'
-    }[sectionId] || sectionId;
-    
-    try {
-        const response = await fetch(`/api/content/load?type=section&section_id=${sectionId}`);
-        const result = await response.json();
-        
-        const currentContent = result.content || '';
-        const newContent = prompt(`Редактировать ${sectionTitle} (HTML):`, currentContent);
-        
-        if (newContent === null) return;
-        
-        const authTime = localStorage.getItem('adminAuthTime');
-        const saveResponse = await fetch('/api/content/save', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'X-Auth-Time': authTime
-            },
-            body: JSON.stringify({
-                type: 'section',
-                section_id: sectionId,
-                content: newContent
-            })
-        });
-        
-        const saveResult = await saveResponse.json();
-        if (saveResult.success) {
-            alert(`${sectionTitle} обновлено!`);
-            location.reload();
-        } else {
-            alert('Ошибка сохранения: ' + saveResult.error);
-        }
-    } catch (error) {
-        console.error('Ошибка редактирования секции:', error);
-        alert('Ошибка редактирования');
-    }
-}
-
-// ПЕРЕДЕЛАННАЯ ЛОГИКА ЗАГРУЗКИ НОВОСТЕЙ
-// Создаем массив в памяти, чтобы хранить загруженные новости
+// --- ЗАГРУЗКА НОВОСТЕЙ ИЗ JSON ---
 let loadedNews = [];
 
 fetch('data/news.json')
     .then(response => response.json())
     .then(data => {
-        loadedNews = data; // Сохраняем данные
+        loadedNews = data;
         const newsList = document.getElementById('newsList');
         
-        // Проходим циклом по каждой новости из JSON файла
         data.forEach((news, index) => {
             const newsItem = document.createElement('div');
             newsItem.className = 'list-item blue-hover';
@@ -665,23 +430,20 @@ fetch('data/news.json')
     })
     .catch(error => console.error('Ошибка загрузки новостей:', error));
 
-// Функция, которая оживляет наше единственное окно под конкретную новость
 function openNewsModal(index) {
-    const news = loadedNews[index]; // Находим нужную новость по номеру
+    const news = loadedNews[index];
     
-    // Подставляем данные в универсальное окно
     document.getElementById('modal-news-title').innerText = news.title;
     document.getElementById('modal-news-date').innerText = news.date;
-    document.getElementById('modal-news-text').innerHTML = news.text; // innerHTML позволит читать теги <br>
+    document.getElementById('modal-news-text').innerHTML = news.text;
     
-    // Открываем окно
     openModal('universal-news-modal');
 }
 
 // --- ИНИЦИАЛИЗАЦИЯ ---
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadConfig();
     initThemeToggle();
-    initContactForm();
+    initApplicationForm();
     initAIAssistant();
-    initContentAdmin();
 });

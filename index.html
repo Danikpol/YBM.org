@@ -30,10 +30,7 @@
 <div class="container">
 
     <div id="about" class="tab-content active">
-        <div class="section-header">
-            <h2>О Движении МБД</h2>
-            <button class="edit-section-btn" onclick="editSection('about')" style="display: none;">✏️ Редактировать</button>
-        </div>
+        <h2>О Движении МБД</h2>
         <p><b>МБД (Молодежное Бизнес Движение)</b> — это закрытая экосистема и сеть единомышленников, созданная для тех, кто не ищет оправданий, а строит реальные проекты и масштабируемые стартапы.</p>
         <p>Наша цель — объединить амбициозных молодых предпринимателей по всей России, предоставить им преференциальные ресурсы инфраструктуры софта VectorB, уничтожить инфантильность в зачатке и вырастить сильное, автономное бизнес-сообщество.</p>
         <p>Мы развиваемся как единая сеть, где каждый участник усиливает остальных через обмен опытом, честную юнит-экономику и жесткую внутреннюю дисциплину.</p>
@@ -46,10 +43,7 @@
     </div>
 
     <div id="docs" class="tab-content">
-        <div class="section-header">
-            <h2>Нормативные Acts и Регламенты</h2>
-            <button class="edit-section-btn" onclick="editSection('docs')" style="display: none;">✏️ Редактировать</button>
-        </div>
+        <h2>Нормативные Acts и Регламенты</h2>
         <p>Официальные регламенты нашего сообщества. Обязательны к изучению каждым резидентом движения:</p>
         
         <div class="item-list">
@@ -110,10 +104,7 @@
     </div>
 
     <div id="security" class="tab-content">
-        <div class="section-header">
-            <h2>Безопасность и Техническая Документация (VectorB)</h2>
-            <button class="edit-section-btn" onclick="editSection('security')" style="display: none;">✏️ Редактировать</button>
-        </div>
+        <h2>Безопасность и Техническая Документация (VectorB)</h2>
         <p>Экосистема МБД функционирует на базе передовых IT-решений ядра VectorB. Мы уделяем ключевое внимание защите архитектуры передачи и хранения конфиденциальных данных наших резидентов.</p>
         
         <h3>Защита передачи данных</h3>
@@ -128,34 +119,27 @@
     <p>Последние технические, архитектурные и организационные изменения в экосистеме МБД:</p>
     
     <div class="item-list" id="newsList"></div>
-
-    <div class="content-admin-panel">
-        <div class="news-admin-header">
-            <h3>Управление контентом</h3>
-        </div>
-        <div class="news-admin-list"></div>
-    </div>
 </div>
 
     <div id="contacts" class="tab-content">
-        <h2>Контакты Администрации</h2>
-        <p>Связь с основателями ядра движения МБД по вопросам сотрудничества, интеграций, партнерства и масштабирования стартапов на всю территорию России.</p>
+        <h2>Форма заявки</h2>
+        <p>Отправьте заявку в движение МБД. Мы свяжемся с вами в течение 24 часов.</p>
         
         <h3 style="margin-top: 25px;">Официальные контакты:</h3>
         <p>💼 Связь, Ядро: <a href="https://t.me/g82891y48927kf93" style="color: var(--accent-blue); font-weight: bold; text-decoration: none;">@g82891y48927kf93</a></p>
         <p>🤝 Партнёр-VectorB: <a href="https://t.me/vectorBrepresent" style="color: var(--accent-blue); font-weight: bold; text-decoration: none;">@vectorBrepresent</a></p>
 
-        <h3 style="margin-top: 35px;">Форма обратной связи</h3>
-        <p class="muted-p">Отправьте сообщение администрации. Мы ответим в течение 24 часов.</p>
+        <h3 style="margin-top: 35px;">Форма заявки</h3>
+        <p class="muted-p">Заполните форму для связи с администрацией.</p>
         
-        <form class="contact-form">
+        <form class="contact-form" id="application-form">
             <div class="form-group">
                 <label for="contact-name">Ваше имя</label>
                 <input type="text" id="contact-name" name="name" required placeholder="Как к вам обращаться?">
             </div>
             <div class="form-group">
-                <label for="contact-email">Email</label>
-                <input type="email" id="contact-email" name="email" required placeholder="your@email.com">
+                <label for="contact-contact">Контакт для связи</label>
+                <input type="text" id="contact-contact" name="contact" required placeholder="Email, Telegram username или телефон">
             </div>
             <div class="form-group">
                 <label for="contact-subject">Тема обращения</label>
@@ -165,6 +149,7 @@
                     <option value="partnership">Партнерство</option>
                     <option value="integration">Интеграция</option>
                     <option value="support">Техническая поддержка</option>
+                    <option value="join">Вступление в МБД</option>
                     <option value="other">Другое</option>
                 </select>
             </div>
@@ -172,8 +157,29 @@
                 <label for="contact-message">Сообщение</label>
                 <textarea id="contact-message" name="message" required placeholder="Опишите суть вашего обращения..."></textarea>
             </div>
-            <button type="submit" class="form-submit">Отправить</button>
-            <div class="form-success">✓ Сообщение успешно отправлено!</div>
+            <div class="form-group">
+                <label>Статус в МБД</label>
+                <div class="radio-group">
+                    <label class="radio-label">
+                        <input type="radio" name="mbd_status" value="none" checked>
+                        <span>Не участник МБД</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="mbd_status" value="member">
+                        <span>Участник МБД (без статуса)</span>
+                    </label>
+                    <label class="radio-label">
+                        <input type="radio" name="mbd_status" value="status">
+                        <span>Имею статус</span>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" id="status-number-group" style="display: none;">
+                <label for="status-number">Номер статуса</label>
+                <input type="text" id="status-number" name="status_number" placeholder="Введите номер статуса">
+            </div>
+            <button type="submit" class="form-submit">Отправить заявку</button>
+            <div class="form-success">✓ Заявка успешно отправлена!</div>
         </form>
     </div>
 
@@ -286,9 +292,6 @@
         </div>
     </div>
 </div>
-
-<!-- Кнопка авторизации администратора -->
-<button class="admin-auth-btn">🔐 Admin</button>
 
 <script src="js/main.js"></script>
 </body>
