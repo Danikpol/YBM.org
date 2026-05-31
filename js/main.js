@@ -53,10 +53,16 @@ async function loadConfig() {
         const response = await fetch('config.json');
         if (response.ok) {
             CONFIG = await response.json();
-            console.log('Конфигурация загружена');
+            console.log('✅ Конфигурация загружена из config.json');
+            console.log('Telegram токен:', CONFIG.telegram.bot_token.substring(0, 10) + '...');
+            console.log('DeepSeek API ключ:', CONFIG.deepseek.api_key.substring(0, 10) + '...');
+        } else {
+            console.log('⚠️ config.json не найден или ошибка загрузки');
+            console.log('Используем конфигурацию по умолчанию');
         }
     } catch (error) {
-        console.log('Используем конфигурацию по умолчанию (или GitHub Actions)');
+        console.log('❌ Ошибка загрузки config.json:', error);
+        console.log('Используем конфигурацию по умолчанию');
     }
 }
 

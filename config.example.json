@@ -1,0 +1,25 @@
+{
+  "telegram": {
+    "bot_token": "YOUR_TELEGRAM_BOT_TOKEN",
+    "chat_id": "YOUR_TELEGRAM_CHAT_ID"
+  },
+  "deepseek": {
+    "api_key": "YOUR_DEEPSEEK_API_KEY",
+    "api_url": "https://api.deepseek.com/v1/chat/completions"
+  },
+  "security": {
+    "rate_limit": {
+      "max_requests_per_minute": 10,
+      "max_requests_per_hour": 100
+    },
+    "recaptcha": {
+      "site_key": "YOUR_RECAPTCHA_SITE_KEY",
+      "secret_key": "YOUR_RECAPTCHA_SECRET_KEY"
+    },
+    "ddos_protection": {
+      "enabled": true,
+      "max_concurrent_requests": 50,
+      "block_duration_seconds": 300
+    }
+  }
+}
