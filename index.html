@@ -52,21 +52,30 @@
                     <b>Манифест МБД v1.0</b>
                     <span>Философия, глобальные цели и миссия развития</span>
                 </div>
-                <button class="view-btn" onclick="openModal('modal-manifest')">Изучить</button>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="view-btn" onclick="openModal('modal-manifest')">Изучить</button>
+                    <a href="docs/manifest.pdf" class="view-btn" target="_blank" download>📄 PDF</a>
+                </div>
             </div>
             <div class="list-item">
                 <div class="item-info">
                     <b>Кодекс МБД (Правила Игры)</b>
                     <span>Свод внутренних правил чатов и дисциплина движения</span>
                 </div>
-                <button class="view-btn" onclick="openModal('modal-code')">Изучить</button>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="view-btn" onclick="openModal('modal-code')">Изучить</button>
+                    <a href="docs/codex.pdf" class="view-btn" target="_blank" download>📄 PDF</a>
+                </div>
             </div>
             <div class="list-item">
                 <div class="item-info">
                     <b>Политика конфиденциальности (NDA)</b>
                     <span>Соглашение о неразглашении внутренней инсайдерской информации</span>
                 </div>
-                <button class="view-btn" onclick="openModal('modal-privacy')">Изучить</button>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="view-btn" onclick="openModal('modal-privacy')">Изучить</button>
+                    <a href="docs/privacy.pdf" class="view-btn" target="_blank" download>📄 PDF</a>
+                </div>
             </div>
         </div>
 
@@ -122,65 +131,25 @@
 </div>
 
     <div id="contacts" class="tab-content">
-        <h2>Форма заявки</h2>
-        <p>Отправьте заявку в движение МБД. Мы свяжемся с вами в течение 24 часов.</p>
+        <h2>Контакты</h2>
+        <p>Официальные каналы связи с ядром движения МБД:</p>
         
-        <h3 style="margin-top: 25px;">Официальные контакты:</h3>
-        <p>💼 Связь, Ядро: <a href="https://t.me/g82891y48927kf93" style="color: var(--accent-blue); font-weight: bold; text-decoration: none;">@g82891y48927kf93</a></p>
-        <p>🤝 Партнёр-VectorB: <a href="https://t.me/vectorBrepresent" style="color: var(--accent-blue); font-weight: bold; text-decoration: none;">@vectorBrepresent</a></p>
-
-        <h3 style="margin-top: 35px;">Форма заявки</h3>
-        <p class="muted-p">Заполните форму для связи с администрацией.</p>
-        
-        <form class="contact-form" id="application-form">
-            <div class="form-group">
-                <label for="contact-name">Ваше имя</label>
-                <input type="text" id="contact-name" name="name" required placeholder="Как к вам обращаться?">
-            </div>
-            <div class="form-group">
-                <label for="contact-contact">Контакт для связи</label>
-                <input type="text" id="contact-contact" name="contact" required placeholder="Email, Telegram username или телефон">
-            </div>
-            <div class="form-group">
-                <label for="contact-subject">Тема обращения</label>
-                <select id="contact-subject" name="subject" required>
-                    <option value="">Выберите тему...</option>
-                    <option value="cooperation">Сотрудничество</option>
-                    <option value="partnership">Партнерство</option>
-                    <option value="integration">Интеграция</option>
-                    <option value="support">Техническая поддержка</option>
-                    <option value="join">Вступление в МБД</option>
-                    <option value="other">Другое</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label for="contact-message">Сообщение</label>
-                <textarea id="contact-message" name="message" required placeholder="Опишите суть вашего обращения..."></textarea>
-            </div>
-            <div class="form-group">
-                <label>Статус в МБД</label>
-                <div class="radio-group">
-                    <label class="radio-label">
-                        <input type="radio" name="mbd_status" value="none" checked>
-                        <span>Не участник МБД</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="mbd_status" value="member">
-                        <span>Участник МБД (без статуса)</span>
-                    </label>
-                    <label class="radio-label">
-                        <input type="radio" name="mbd_status" value="status">
-                        <span>Имею статус</span>
-                    </label>
+        <div class="item-list">
+            <div class="list-item">
+                <div class="item-info">
+                    <b>Связь с ядром</b>
+                    <span>Основной канал для вопросов и предложений</span>
                 </div>
+                <a href="https://t.me/g82891y48927kf93" class="view-btn" target="_blank">Написать</a>
             </div>
-            <div class="form-group" id="status-number-group" style="display: none;">
-                <label for="status-number">Номер статуса</label>
-                <input type="text" id="status-number" name="status_number" placeholder="Введите номер статуса">
+            <div class="list-item">
+                <div class="item-info">
+                    <b>Партнёр VectorB</b>
+                    <span>По вопросам партнёрства и интеграций</span>
+                </div>
+                <a href="https://t.me/vectorBrepresent" class="view-btn blue-btn" target="_blank">Написать</a>
             </div>
-            <button type="submit" class="form-submit">Отправить заявку</button>
-            <div class="form-success">✓ Заявка успешно отправлена!</div>
-        </form>
+        </div>
     </div>
 
 </div>
@@ -270,26 +239,6 @@
             Текст новости...
         </div>
         <button class="modal-close-btn blue-btn" onclick="closeModal('universal-news-modal')">ОК</button>
-    </div>
-</div>
-
-<!-- AI Ассистент -->
-<div class="ai-assistant">
-    <button class="ai-button">🤖</button>
-    <div class="ai-chat-window">
-        <div class="ai-chat-header">
-            <h3>AI Ассистент МБД</h3>
-            <button class="ai-close-chat">×</button>
-        </div>
-        <div class="ai-chat-messages">
-            <div class="ai-message assistant">
-                Привет! Я AI-ассистент МБД. Спросите меня о движении, вступлении, проектах или правилах.
-            </div>
-        </div>
-        <div class="ai-chat-input">
-            <input type="text" placeholder="Задайте вопрос...">
-            <button>→</button>
-        </div>
     </div>
 </div>
 
