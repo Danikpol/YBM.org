@@ -33,55 +33,102 @@
         <h2>О Движении МБД</h2>
         <p><b>МБД (Молодежное Бизнес Движение)</b> — это закрытая экосистема и сеть единомышленников, созданная для тех, кто не ищет оправданий, а строит реальные проекты и масштабируемые стартапы.</p>
         <p>Наша цель — объединить амбициозных молодых предпринимателей по всей России, предоставить им преференциальные ресурсы инфраструктуры софта VectorB, уничтожить инфантильность в зачатке и вырастить сильное, автономное бизнес-сообщество.</p>
-        
-        <div class="action-buttons" style="display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 25px auto 0 auto;">
-            <a href="https://t.me/YBM_Union_bot" class="btn-link" style="background-color: var(--blue-color); padding: 12px; font-weight: bold;">🚀 Присоединиться к МБД</a>
-            <a href="https://t.me/helptoIP_bot" class="btn-link" style="padding: 12px;">⚙️ Запустить VectorB Bot</a>
-            <p style="margin-top: 5px; font-size: 0.8rem; color: var(--text-muted); text-align: center; opacity: 0.8;">Готов включиться в игру?</p>
+        <p>Мы развиваемся как единая сеть, где каждый участник усиливает остальных через обмен опытом, честную юнит-экономику и жесткую внутреннюю дисциплину.</p>
+
+        <div class="action-buttons" style="display: flex; flex-direction: column; gap: 12px; max-width: 320px; margin: 25px auto 0 auto;">
+            <a href="https://t.me/YBM_Union_bot" class="btn-link" style="background-color: #007bff; color: white; border: none; padding: 14px; font-weight: bold; text-align: center; border-radius: 8px; text-decoration: none;">🚀 Присоединиться к МБД</a>
+            <a href="https://t.me/helptoIP_bot" class="btn-link" style="padding: 14px; text-align: center; border-radius: 8px; text-decoration: none;">⚙️ Запустить VectorB Bot</a>
+            <p style="margin-top: 5px; font-size: 0.85rem; color: var(--text-muted); text-align: center; opacity: 0.8;">Готов включиться в игру?</p>
         </div>
     </div>
 
     <div id="docs" class="tab-content">
         <h2>Нормативные Acts и Регламенты</h2>
+        <p>Официальные регламенты нашего сообщества. Обязательны к изучению каждым резидентом движения:</p>
         <div class="item-list">
             <div class="list-item">
-                <div class="item-info"><b>Манифест МБД v1.0</b><span>Философия, миссия развития</span></div>
+                <div class="item-info"><b>Манифест МБД v1.0</b><span>Философия, глобальные цели и миссия развития</span></div>
                 <button class="view-btn" onclick="openModal('modal-manifest')">Изучить</button>
             </div>
             <div class="list-item">
-                <div class="item-info"><b>Кодекс МБД (Правила Игры)</b><span>Дисциплина движения</span></div>
+                <div class="item-info"><b>Кодекс МБД (Правила Игры)</b><span>Свод внутренних правил чатов и дисциплина движения</span></div>
                 <button class="view-btn" onclick="openModal('modal-code')">Изучить</button>
             </div>
             <div class="list-item">
-                <div class="item-info"><b>Политика NDA</b><span>Конфиденциальность информации</span></div>
+                <div class="item-info"><b>Политика конфиденциальности (NDA)</b><span>Соглашение о неразглашении инсайдерской информации</span></div>
                 <button class="view-btn" onclick="openModal('modal-privacy')">Изучить</button>
             </div>
+        </div>
+        <h3 style="margin-top: 35px;">Иерархическая структура экосистемы</h3>
+        <p class="muted-p">Система построена на принципах меритократии: статус и влияние внутри движения подтверждаются исключительно реальными действиями.</p>
+        <div class="table-responsive">
+            <table class="pdf-table">
+                <thead><tr><th>Уровень</th><th>Статус</th><th>Главная функция</th></tr></thead>
+                <tbody>
+                    <tr><td><b>Уровень 1</b></td><td>Общий круг</td><td>Первичный отбор, фильтрация инфантильности, базовая адаптация новичков.</td></tr>
+                    <tr><td><b>Уровень 2</b></td><td>Стартаперы</td><td>Операционное развитие, обмен опытом, краш-тесты бизнес-моделей.</td></tr>
+                    <tr><td><b>Уровень 3</b></td><td>Финансисты VIP</td><td>Стратегическое партнерство, менторство, внутренние пулы капитала и фонды.</td></tr>
+                </tbody>
+            </table>
         </div>
     </div>
 
     <div id="security" class="tab-content">
-        <h2>Безопасность (VectorB)</h2>
-        <p>Экосистема функционирует на базе ядра VectorB. Все запросы шифруются и проходят фильтрацию ИИ по протоколу TLS.</p>
+        <h2>Безопасность и Техническая Документация (VectorB)</h2>
+        <p>Экосистема МБД функционирует на базе передовых IT-решений ядра VectorB. Мы уделяем ключевое внимание защите архитектуры передачи и хранения конфиденциальных данных.</p>
+        <h3>Защита передачи данных</h3>
+        <p>Все запросы клиентов и данные участников внутри Telegram-ботов шифруются и проходят предварительную фильтрацию ИИ. Обмен информацией с серверами баз данных и внешними API (включая DeepSeek API) осуществляется строго по защищенным TLS-протоколам.</p>
+        <h3>Безопасность хранения</h3>
+        <p>Персональные данные и логи модерации хранятся в изолированных реляционных базах данных с ограниченным уровнем доступа. Любые попытки несанкционированного слива инсайдов мгновенно пресекаются системами автоматической киберзащиты.</p>
     </div>
 
     <div id="updates" class="tab-content">
-        <h2>Обновления</h2>
+        <h2>Лента обновлений платформы</h2>
+        <p>Последние технические, архитектурные и организационные изменения в экосистеме МБД:</p>
         <div class="item-list" id="newsList"></div>
     </div>
 
     <div id="contacts" class="tab-content">
         <h2>Контакты</h2>
+        <p>Официальные каналы связи с ядром движения МБД:</p>
         <div class="item-list">
             <div class="list-item">
-                <div class="item-info"><b>Связь с ядром</b></div>
+                <div class="item-info"><b>Связь с ядром</b><span>Основной канал для вопросов и предложений</span></div>
                 <a href="https://t.me/g82891y48927kf93" class="view-btn" target="_blank">Написать</a>
+            </div>
+            <div class="list-item">
+                <div class="item-info"><b>Партнёр VectorB</b><span>По вопросам партнёрства и интеграций</span></div>
+                <a href="https://t.me/vectorBrepresent" class="view-btn blue-btn" target="_blank">Написать</a>
             </div>
         </div>
     </div>
-
 </div>
 
-<!-- Модальные окна опущены для краткости, они у тебя были верные -->
+<!-- Модальные окна -->
+<div id="modal-manifest" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-manifest')">
+    <div class="modal-window">
+        <h2>МАНИФЕСТ МБД: ТОЧКА ВХОДА</h2>
+        <p><b>1. МЫ НЕ ЖДЕМ РАЗРЕШЕНИЯ.</b><br>Мы не спрашиваем позволения быть успешными — мы просто ими становимся.</p>
+        <button class="modal-close-btn" onclick="closeModal('modal-manifest')">ОК</button>
+    </div>
+</div>
+
+<div id="modal-code" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-code')">
+    <div class="modal-window">
+        <h2>Кодекс МБД: Правила Игры</h2>
+        <p>Незнание не освобождает от бана. У нас нет «второго шанса», есть только дисциплина.</p>
+        <button class="modal-close-btn" onclick="closeModal('modal-code')">ОК</button>
+    </div>
+</div>
+
+<div id="modal-privacy" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-privacy')">
+    <div class="modal-window">
+        <h2>ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</h2>
+        <p>Обработка данных нейросетевыми моделями (DeepSeek API) происходит в изолированном режиме.</p>
+        <button class="modal-close-btn" onclick="closeModal('modal-privacy')">ОК</button>
+    </div>
+</div>
+
 <script src="js/main.js"></script>
 </body>
 </html>
