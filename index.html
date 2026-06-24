@@ -55,7 +55,7 @@
                 <button class="view-btn" onclick="openModal('modal-code')">Изучить</button>
             </div>
             <div class="list-item">
-                <div class="item-info"><b>Политика конфиденциальности (NDA)</b><span>Соглашение о неразглашении инсайдерской информации</span></div>
+                <div class="item-info"><b>Политика конфиденциальности (NDA)</b><span>Соглашение о неразглашении внутренней инсайдерской информации</span></div>
                 <button class="view-btn" onclick="openModal('modal-privacy')">Изучить</button>
             </div>
         </div>
@@ -75,7 +75,7 @@
 
     <div id="security" class="tab-content">
         <h2>Безопасность и Техническая Документация (VectorB)</h2>
-        <p>Экосистема МБД функционирует на базе передовых IT-решений ядра VectorB. Мы уделяем ключевое внимание защите архитектуры передачи и хранения конфиденциальных данных.</p>
+        <p>Экосистема МБД функционирует на базе передовых IT-решений ядра VectorB. Мы уделяем ключевое внимание защите архитектуры передачи и хранения конфиденциальных данных наших резидентов.</p>
         <h3>Защита передачи данных</h3>
         <p>Все запросы клиентов и данные участников внутри Telegram-ботов шифруются и проходят предварительную фильтрацию ИИ. Обмен информацией с серверами баз данных и внешними API (включая DeepSeek API) осуществляется строго по защищенным TLS-протоколам.</p>
         <h3>Безопасность хранения</h3>
@@ -108,7 +108,9 @@
 <div id="modal-manifest" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-manifest')">
     <div class="modal-window">
         <h2>МАНИФЕСТ МБД: ТОЧКА ВХОДА</h2>
-        <p><b>1. МЫ НЕ ЖДЕМ РАЗРЕШЕНИЯ.</b><br>Мы не спрашиваем позволения быть успешными — мы просто ими становимся.</p>
+        <p><b>1. МЫ НЕ ЖДЕМ РАЗРЕШЕНИЯ.</b><br>Нам говорят: «Сначала доучись», «Найди нормальную работу», «Ты еще мал». Мы уважаем образование, но не принимаем режим ожидания. Наш бизнес начинается сейчас. Мы не спрашиваем позволения быть успешными — мы просто ими становимся.</p>
+        <p><b>2. АНТИ-ХАЙП И РЕАЛЬНЫЕ ДЕЛА.</b><br>В МБД не место тем, кто «мнет титьки» и кормит завтраками. Мы ценим действие выше идеи. Ошибаться — это нормально. Сидеть на месте и ныть — нет.</p>
+        <p><b>3. ИЕРАРХИЯ РЕЗУЛЬТАТА.</b><br>У нас нет «главных» по знакомству, есть только статус, подтвержденный делом.</p>
         <button class="modal-close-btn" onclick="closeModal('modal-manifest')">ОК</button>
     </div>
 </div>
@@ -116,7 +118,7 @@
 <div id="modal-code" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-code')">
     <div class="modal-window">
         <h2>Кодекс МБД: Правила Игры</h2>
-        <p>Незнание не освобождает от бана. У нас нет «второго шанса», есть только дисциплина.</p>
+        <p>Вступая в МБД, ты принимаешь эти условия. У нас нет «второго шанса», есть только дисциплина.</p>
         <button class="modal-close-btn" onclick="closeModal('modal-code')">ОК</button>
     </div>
 </div>
@@ -124,8 +126,17 @@
 <div id="modal-privacy" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-privacy')">
     <div class="modal-window">
         <h2>ПОЛИТИКА КОНФИДЕНЦИАЛЬНОСТИ</h2>
-        <p>Обработка данных нейросетевыми моделями (DeepSeek API) происходит в изолированном режиме.</p>
+        <p>Все идеи, концепции, бизнес-планы и стратегии, передаваемые Пользователем, признаются конфиденциальной информацией. Обработка данных нейросетевыми моделями происходит в изолированном режиме.</p>
         <button class="modal-close-btn" onclick="closeModal('modal-privacy')">ОК</button>
+    </div>
+</div>
+
+<div id="universal-news-modal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'universal-news-modal')">
+    <div class="modal-window">
+        <h2 id="modal-news-title">Название новости</h2>
+        <p class="muted-p" id="modal-news-date">Дата</p>
+        <div id="modal-news-text" style="margin-top: 15px; color: var(--text-white); font-size: 0.95rem;"></div>
+        <button class="modal-close-btn blue-btn" onclick="closeModal('universal-news-modal')">ОК</button>
     </div>
 </div>
 
