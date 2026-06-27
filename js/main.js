@@ -55,52 +55,46 @@ function updateThemeIcon(theme) {
     }
 }
 
-// --- ЗАГРУЗКА НОВОСТЕЙ ИЗ JSON ---
+// --- ЗАГРУЗКА НОВОСТЕЙ С API (обновлено) ---
 let loadedNews = [];
 
-fetch('data/news.json')
+// Вместо 'ВАШ_IP_СЕРВЕРА' впиши IP твоего сервера или api.ybmorg.ru
+fetch('http://ВАШ_IP_СЕРВЕРА:8000/news')
     .then(response => response.json())
     .then(data => {
         loadedNews = data;
         const newsList = document.getElementById('newsList');
+        if (!newsList) return;
+        
+        newsList.innerHTML = ''; // Очищаем список перед отрисовкой
         
         data.forEach((news, index) => {
             const newsItem = document.createElement('div');
             newsItem.className = 'list-item blue-hover';
             
-            let fileButton = '';
-            if (news.file) {
-                fileButton = `<a href="${news.file}" class="view-btn blue-btn" target="_blank" download>📄 Скачать PDF</a>`;
-            }
-            
             newsItem.innerHTML = `
                 <div class="item-info">
                     <b>${news.title}</b>
-                    <span>${news.date} — ${news.description}</span>
+                    <span>${news.date}</span>
                 </div>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button class="view-btn blue-btn" onclick="openNewsModal(${index})">Изучить</button>
-                    ${fileButton}
-                </div>
+                <button class="view-btn blue-btn" onclick="openNewsModal(${index})">Изучить</button>
             `;
             newsList.appendChild(newsItem);
         });
     })
     .catch(error => {
-        console.error('Ошибка загрузки новостей:', error);
+        console.error('Ошибка загрузки новостей из API:', error);
         const newsList = document.getElementById('newsList');
         if (newsList) {
-            newsList.innerHTML = '<p class="muted-p">Не удалось загрузить новости. Попробуйте позже.</p>';
+            newsList.innerHTML = '<p class="muted-p">Обновления пока недоступны.</p>';
         }
     });
 
 function openNewsModal(index) {
     const news = loadedNews[index];
-    
     document.getElementById('modal-news-title').innerText = news.title;
     document.getElementById('modal-news-date').innerText = news.date;
-    document.getElementById('modal-news-text').innerHTML = news.text;
-    
+    document.getElementById('modal-news-text').innerText = news.text;
     openModal('universal-news-modal');
 }
 
