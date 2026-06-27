@@ -59,7 +59,7 @@ function updateThemeIcon(theme) {
 let loadedNews = [];
 
 // Вместо 'ВАШ_IP_СЕРВЕРА' впиши IP твоего сервера или api.ybmorg.ru
-fetch('http://ВАШ_IP_СЕРВЕРА:8000/news')
+fetch('http://194.87.26.177:8000/news')
     .then(response => response.json())
     .then(data => {
         loadedNews = data;
