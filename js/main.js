@@ -102,3 +102,27 @@ function openNewsModal(index) {
 document.addEventListener('DOMContentLoaded', () => {
     initThemeToggle();
 });
+
+function toggleChat() {
+    document.getElementById('ai-chat-window').classList.toggle('hidden');
+}
+
+document.getElementById('chat-input').addEventListener('keypress', async (e) => {
+    if (e.key === 'Enter') {
+        const input = e.target;
+        const msg = input.value;
+        input.value = '';
+        
+        // Отправка на наш бэкенд
+        const response = await fetch('https://api.ybmorg.ru/ask', {
+            method: 'POST',
+            body: JSON.stringify({ prompt: msg }),
+            headers: {'Content-Type': 'application/json'}
+        });
+        const data = await response.json();
+        
+        const chat = document.getElementById('chat-messages');
+        chat.innerHTML += `<div><b>Вы:</b> ${msg}</div><div><b>AI:</b> ${data.answer}</div>`;
+        chat.scrollTop = chat.scrollHeight;
+    }
+});
