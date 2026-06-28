@@ -5,16 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>МБД — Официальная Платформа</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        .btn-group {
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-            margin-top: 15px;
-            margin-bottom: 5px;
-        }
-    </style>
 </head>
 <body>
 
@@ -44,10 +34,10 @@
         <p><b>МБД (Молодежное Бизнес Движение)</b> — это закрытая экосистема и сеть единомышленников, созданная для тех, кто не ищет оправданий, а строит реальные проекты и масштабируемые стартапы.</p>
         <p>Наша цель — объединить амбициозных молодых предпринимателей по всей России, предоставить им преференциальные ресурсы инфраструктуры софта VectorB, уничтожить инфантильность в зачатке и вырастить сильное, автономное бизнес-сообщество.</p>
         <p>Мы развиваемся как единая сеть, где каждый участник усиливает остальных через обмен опытом, честную юнит-экономику и жесткую внутреннюю дисциплину.</p>
+        
         <br>
         <p class="muted-p" style="text-align: center;">Готов ликвидировать инфантильность и запустить свой проект в рамках закрытого сообщества?</p>
-        <div class="btn-group">
-            <a href="https://t.me/YBM_Union_bot" class="btn-link">🚀 Перейти в YBM Union Bot</a>
+        <div style="text-align: center; margin-top: 15px; margin-bottom: 5px;">
             <a href="https://t.me/helptoIP_bot" class="btn-link">🚀 Запустить VectorB Bot</a>
         </div>
     </div>
@@ -55,34 +45,43 @@
     <div id="docs" class="tab-content">
         <h2>Нормативные Acts и Регламенты</h2>
         <p>Официальные регламенты нашего сообщества. Обязательны к изучению каждым резидентом движения:</p>
-
+        
         <div class="item-list">
             <div class="list-item">
                 <div class="item-info">
                     <b>Манифест МБД v1.0</b>
                     <span>Философия, глобальные цели и миссия развития</span>
                 </div>
-                <button class="view-btn blue-btn" onclick="openModal('modal-manifest')">Изучить</button>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="view-btn" onclick="openModal('modal-manifest')">Изучить</button>
+                    <a href="docs/manifest.pdf" class="view-btn" target="_blank" download>📄 PDF</a>
+                </div>
             </div>
             <div class="list-item">
                 <div class="item-info">
                     <b>Кодекс МБД (Правила Игры)</b>
                     <span>Свод внутренних правил чатов и дисциплина движения</span>
                 </div>
-                <button class="view-btn blue-btn" onclick="openModal('modal-code')">Изучить</button>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="view-btn" onclick="openModal('modal-code')">Изучить</button>
+                    <a href="docs/codex.pdf" class="view-btn" target="_blank" download>📄 PDF</a>
+                </div>
             </div>
             <div class="list-item">
                 <div class="item-info">
                     <b>Политика конфиденциальности (NDA)</b>
                     <span>Соглашение о неразглашении внутренней инсайдерской информации</span>
                 </div>
-                <button class="view-btn blue-btn" onclick="openModal('modal-privacy')">Изучить</button>
+                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                    <button class="view-btn" onclick="openModal('modal-privacy')">Изучить</button>
+                    <a href="docs/privacy.pdf" class="view-btn" target="_blank" download>📄 PDF</a>
+                </div>
             </div>
         </div>
 
         <h3 style="margin-top: 35px;">Иерархическая структура экосистемы</h3>
         <p class="muted-p">Система построена на принципах меритократии: статус и влияние внутри движения подтверждаются исключительно реальными действиями.</p>
-
+        
         <div class="table-responsive">
             <table class="pdf-table">
                 <thead>
@@ -116,21 +115,25 @@
     <div id="security" class="tab-content">
         <h2>Безопасность и Техническая Документация (VectorB)</h2>
         <p>Экосистема МБД функционирует на базе передовых IT-решений ядра VectorB. Мы уделяем ключевое внимание защите архитектуры передачи и хранения конфиденциальных данных наших резидентов.</p>
+        
         <h3>Защита передачи данных</h3>
         <p>Все запросы клиентов и данные участников внутри Telegram-ботов шифруются и проходят предварительную фильтрацию ИИ. Обмен информацией с серверами баз данных и внешними API (включая DeepSeek API) осуществляется строго по защищенным TLS-протоколам.</p>
+        
         <h3>Безопасность хранения</h3>
         <p>Персональные данные и логи модерации хранятся в изолированных реляционных базах данных с ограниченным уровнем доступа. Любые попытки несанкционированного слива инсайдов мгновенно пресекаются системами автоматической киберзащиты.</p>
     </div>
 
     <div id="updates" class="tab-content">
-        <h2>Лента обновлений платформы</h2>
-        <p>Последние технические, архитектурные и организационные изменения в экосистеме МБД:</p>
-        <div class="item-list" id="newsList"></div>
-    </div>
+    <h2>Лента обновлений платформы</h2>
+    <p>Последние технические, архитектурные и организационные изменения в экосистеме МБД:</p>
+    
+    <div class="item-list" id="newsList"></div>
+</div>
 
     <div id="contacts" class="tab-content">
         <h2>Контакты</h2>
         <p>Официальные каналы связи с ядром движения МБД:</p>
+        
         <div class="item-list">
             <div class="list-item">
                 <div class="item-info">
@@ -147,6 +150,20 @@
                 <a href="https://t.me/vectorBrepresent" class="view-btn blue-btn" target="_blank">Написать</a>
             </div>
         </div>
+    </div>
+
+</div>
+
+<div id="ai-assistant-btn" class="ai-btn" onclick="openModal('modal-ai-chat')">
+    <span>🤖</span>
+</div>
+
+<div id="modal-ai-chat" class="modal-overlay" onclick="closeModalOnOverlay(event, 'modal-ai-chat')">
+    <div class="modal-window">
+        <h2>VectorB Assistant</h2>
+        <p>Привет! Я помощник VectorB. Задай свой вопрос по экосистеме МБД.</p>
+        <textarea placeholder="Введите ваш запрос..." style="width: 100%; height: 100px; background: var(--input-bg); border: 1px solid var(--border-color); color: var(--text-white); padding: 10px; border-radius: 4px;"></textarea>
+        <button class="modal-close-btn" onclick="closeModal('modal-ai-chat')">Отправить</button>
     </div>
 </div>
 
@@ -227,7 +244,6 @@
         <button class="modal-close-btn blue-btn" onclick="closeModal('modal-update-web')">ОК</button>
     </div>
 </div>
-
 <div id="universal-news-modal" class="modal-overlay" onclick="closeModalOnOverlay(event, 'universal-news-modal')">
     <div class="modal-window">
         <h2 id="modal-news-title">Название новости</h2>
@@ -240,34 +256,5 @@
 </div>
 
 <script src="js/main.js"></script>
-
-<div id="chat-bubble" onclick="toggleChat()">💬</div>
-
-<div id="ai-chat-window" class="hidden">
-    <div id="chat-header">VectorB Assistant</div>
-    <div id="chat-messages"></div>
-    <input type="text" id="chat-input" placeholder="Задайте вопрос...">
-</div>
-
-<style>
-#chat-bubble { position: fixed; bottom: 20px; right: 20px; cursor: pointer; font-size: 30px; }
-#ai-chat-window { position: fixed; bottom: 80px; right: 20px; width: 300px; height: 400px; background: #1a1a1a; border: 1px solid #444; border-radius: 10px; display: flex; flex-direction: column; }
-#chat-messages { flex: 1; overflow-y: auto; padding: 10px; color: white; font-size: 14px; }
-#chat-input { padding: 10px; border: none; border-top: 1px solid #444; background: #222; color: white; }
-.hidden { display: none !important; }
-</style>
-<div id="chat-bubble" onclick="toggleChat()">💬</div>
-
-<div id="ai-chat-window" class="hidden">
-    <div id="chat-header">VectorB Assistant 🤖</div>
-    <div id="chat-messages">
-        <div class="ai-msg">Привет! Я помощник VectorB. Что тебя интересует?</div>
-    </div>
-    <div id="chat-input-area">
-        <input type="text" id="chat-input" placeholder="Введите вопрос...">
-        <button id="send-btn" onclick="sendMessage()">➤</button>
-    </div>
-</div>
-
 </body>
 </html>
