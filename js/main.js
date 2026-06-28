@@ -125,4 +125,33 @@ document.getElementById('chat-input').addEventListener('keypress', async (e) => 
         chat.innerHTML += `<div><b>Вы:</b> ${msg}</div><div><b>AI:</b> ${data.answer}</div>`;
         chat.scrollTop = chat.scrollHeight;
     }
+    function toggleChat() {
+    const chat = document.getElementById('ai-chat-window');
+    chat.classList.toggle('hidden');
+}
+
+async function sendMessage() {
+    const input = document.getElementById('chat-input');
+    const msg = input.value.trim();
+    if (!msg) return;
+
+    // Добавляем сообщение пользователя
+    const chat = document.getElementById('chat-messages');
+    chat.innerHTML += `<div style="text-align: right; color: #007bff;">${msg}</div>`;
+    input.value = '';
+
+    // Запрос к API
+    try {
+        const response = await fetch('https://api.ybmorg.ru/ask', {
+            method: 'POST',
+            body: JSON.stringify({ prompt: msg }),
+            headers: {'Content-Type': 'application/json'}
+        });
+        const data = await response.json();
+        chat.innerHTML += `<div style="margin-top: 10px;"><b>AI:</b> ${data.answer}</div>`;
+    } catch (e) {
+        chat.innerHTML += `<div style="color: red;">Ошибка связи с сервером.</div>`;
+    }
+    chat.scrollTop = chat.scrollHeight;
+}
 });
