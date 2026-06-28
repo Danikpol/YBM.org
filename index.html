@@ -256,7 +256,18 @@
 #chat-input { padding: 10px; border: none; border-top: 1px solid #444; background: #222; color: white; }
 .hidden { display: none !important; }
 </style>
+<div id="chat-bubble" onclick="toggleChat()">💬</div>
 
+<div id="ai-chat-window" class="hidden">
+    <div id="chat-header">VectorB Assistant 🤖</div>
+    <div id="chat-messages">
+        <div class="ai-msg">Привет! Я помощник VectorB. Что тебя интересует?</div>
+    </div>
+    <div id="chat-input-area">
+        <input type="text" id="chat-input" placeholder="Введите вопрос...">
+        <button id="send-btn" onclick="sendMessage()">➤</button>
+    </div>
+</div>
 
 </body>
 </html>
