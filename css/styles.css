@@ -1,24 +1,32 @@
 :root {
-    --bg-main: #1e222b;        /* Глубокий темно-серый */
-    --bg-card: #282c34;        /* Графитовый для блоков */
-    --accent-red: #ff4a4a;     /* Огненно-красный акцент движения МБД */
-    --accent-blue: #4a9eff;    /* Синий акцент для обновлений */
-    --text-white: #f5f6f7;     /* Чистый текст */
-    --text-muted: #9da5b4;     /* Смягченный текст */
-    --border-color: #3e4451;   /* Разделительные линии */
-    --input-bg: rgba(0, 0, 0, 0.15);
+    --bg-main: #0a0a0a;        /* Чистый чёрный */
+    --bg-card: #141414;        /* Тёмно-серый для блоков */
+    --bg-card-hover: #1a1a1a;  /* Ховер для карточек */
+    --accent-gold: #d4af37;    /* Золотой акцент */
+    --accent-gold-light: #f4d03f; /* Светлое золото для ховеров */
+    --accent-gold-dark: #b8941e; /* Тёмное золото */
+    --text-white: #f5f5f5;     /* Чистый белый текст */
+    --text-muted: #a0a0a0;     /* Смягченный текст */
+    --border-color: #2a2a2a;   /* Разделительные линии */
+    --border-gold: rgba(212, 175, 55, 0.3); /* Золотая граница */
+    --input-bg: rgba(212, 175, 55, 0.05);
+    --shadow-gold: rgba(212, 175, 55, 0.15);
 }
 
-/* Светлая тема - улучшенная читаемость */
+/* Светлая тема - чёрно-золотая палитра */
 [data-theme="light"] {
-    --bg-main: #f5f6f7;        /* Светлый фон */
+    --bg-main: #fafafa;        /* Светлый фон */
     --bg-card: #ffffff;        /* Белый для блоков */
-    --accent-red: #d32f2f;     /* Темно-красный акцент */
-    --accent-blue: #1976d2;    /* Темно-синий акцент */
-    --text-white: #1a1a1a;     /* Темный текст */
-    --text-muted: #4a5568;     /* Смягченный текст */
-    --border-color: #e2e8f0;   /* Светлые разделительные линии */
-    --input-bg: #f7fafc;
+    --bg-card-hover: #f5f5f5;  /* Ховер для карточек */
+    --accent-gold: #b8941e;    /* Тёмное золото для читаемости */
+    --accent-gold-light: #d4af37; /* Золото для ховеров */
+    --accent-gold-dark: #9a7b1a; /* Более тёмное золото */
+    --text-white: #1a1a1a;     /* Тёмный текст */
+    --text-muted: #666666;     /* Смягченный текст */
+    --border-color: #e0e0e0;   /* Светлые разделительные линии */
+    --border-gold: rgba(184, 148, 30, 0.3);
+    --input-bg: rgba(184, 148, 30, 0.05);
+    --shadow-gold: rgba(184, 148, 30, 0.1);
 }
 
 /* Общие системные настройки для мобилок */
@@ -33,82 +41,106 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     margin: 0;
     padding: 0;
-    line-height: 1.5;
+    line-height: 1.6;
     overflow-x: hidden; /* Защита от горизонтального скролла всего сайта */
 }
 
-/* Строгая шапка */
+/* Современная шапка с золотым акцентом */
 header {
-    background-color: var(--bg-card);
-    padding: 35px 15px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, #1a1a1a 100%);
+    padding: 40px 20px;
     text-align: center;
-    border-bottom: 3px solid var(--border-color);
-    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    border-bottom: 2px solid var(--accent-gold);
+    box-shadow: 0 4px 20px var(--shadow-gold);
     position: relative;
+    overflow: hidden;
+}
+
+header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    opacity: 0.6;
 }
 
 header h1 {
     margin: 0;
-    font-size: 2.4rem;
+    font-size: 2.8rem;
     font-weight: 800;
-    letter-spacing: 2px;
+    letter-spacing: 3px;
     text-transform: uppercase;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-light) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    position: relative;
+    z-index: 1;
 }
 
 header p {
-    color: var(--accent-red);
-    margin: 6px 0 0 0;
-    font-weight: 700;
+    color: var(--accent-gold);
+    margin: 8px 0 0 0;
+    font-weight: 600;
     text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 3px;
+    font-size: 0.95rem;
+    letter-spacing: 4px;
+    position: relative;
+    z-index: 1;
 }
 
-/* Переключатель темы */
+/* Переключатель темы - современный стиль */
 .theme-toggle {
     position: absolute;
     top: 20px;
     right: 20px;
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 20px;
-    padding: 8px 16px;
+    background: rgba(212, 175, 55, 0.1);
+    border: 1px solid var(--accent-gold);
+    border-radius: 25px;
+    padding: 10px 18px;
     cursor: pointer;
     display: flex;
     align-items: center;
     gap: 8px;
     transition: all 0.3s ease;
     z-index: 1000;
+    backdrop-filter: blur(10px);
 }
 
 .theme-toggle:hover {
-    border-color: var(--accent-red);
-    transform: scale(1.05);
+    background: rgba(212, 175, 55, 0.2);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-gold);
 }
 
 .theme-toggle span {
-    font-size: 0.8rem;
-    font-weight: 700;
+    font-size: 0.85rem;
+    font-weight: 600;
     text-transform: uppercase;
-    color: var(--text-white);
+    color: var(--accent-gold);
+    letter-spacing: 1px;
 }
 
 .theme-toggle .icon {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
 }
 
-/* Навигация — адаптивная лента вкладок */
+/* Навигация — современная лента вкладок */
 .nav-container {
     background: var(--bg-card);
-    border-bottom: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-gold);
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.3);
 }
 
 .nav-tabs {
     display: flex;
-    max-width: 850px;
+    max-width: 900px;
     margin: 0 auto;
     overflow-x: auto;
     scrollbar-width: none; /* Прячем скроллбар в Firefox */
@@ -123,170 +155,278 @@ header p {
     background: none;
     border: none;
     color: var(--text-muted);
-    padding: 16px 20px;
+    padding: 18px 22px;
     cursor: pointer;
     font-size: 0.85rem;
-    font-weight: 700;
+    font-weight: 600;
     text-transform: uppercase;
-    letter-spacing: 1px;
-    transition: all 0.2s ease;
+    letter-spacing: 1.5px;
+    transition: all 0.3s ease;
     white-space: nowrap;
     flex-shrink: 0; /* Компоненты меню не сжимаются */
+    position: relative;
 }
 
-.tab-btn:hover, .tab-btn.active {
+.tab-btn::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 0;
+    height: 2px;
+    background: var(--accent-gold);
+    transition: width 0.3s ease;
+}
+
+.tab-btn:hover {
     color: var(--text-white);
-    border-bottom: 3px solid var(--accent-red);
-    background-color: rgba(255, 74, 74, 0.02);
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.tab-btn:hover::after,
+.tab-btn.active::after {
+    width: 80%;
+}
+
+.tab-btn.active {
+    color: var(--accent-gold);
+    background: rgba(212, 175, 55, 0.08);
 }
 
 /* Главный контейнер */
 .container {
-    max-width: 850px;
-    margin: 25px auto;
-    padding: 0 15px;
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
 }
 
 .tab-content {
     display: none;
-    background-color: var(--bg-card);
-    padding: 30px 25px;
-    border-radius: 8px;
-    border: 1px solid var(--border-color);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+    background: var(--bg-card);
+    padding: 35px 30px;
+    border-radius: 12px;
+    border: 1px solid var(--border-gold);
+    box-shadow: 0 8px 30px rgba(0,0,0,0.4);
+    transition: all 0.3s ease;
 }
 
 .tab-content.active {
     display: block;
+    animation: fadeIn 0.4s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Стилизация заголовков и текстов */
 h2 {
-    color: var(--text-white);
-    font-size: 1.45rem;
+    color: var(--accent-gold);
+    font-size: 1.6rem;
     font-weight: 700;
-    border-left: 4px solid var(--accent-red);
-    padding-left: 10px;
+    border-left: 4px solid var(--accent-gold);
+    padding-left: 15px;
     margin-top: 0;
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
+    text-shadow: 0 2px 4px rgba(212, 175, 55, 0.2);
 }
 
 h3 {
-    color: var(--accent-red);
-    font-size: 1.15rem;
-    font-weight: 700;
-    margin-top: 25px;
-    margin-bottom: 12px;
+    color: var(--accent-gold-light);
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-top: 30px;
+    margin-bottom: 15px;
     text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 p {
     color: var(--text-white);
     font-size: 1rem;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
+    line-height: 1.7;
 }
 
 .muted-p {
     color: var(--text-muted);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    font-style: italic;
 }
 
 /* Списки элементов (Документы и Обновления) */
 .item-list {
-    margin: 20px 0;
+    margin: 25px 0;
 }
 
 .list-item {
-    background: var(--input-bg);
+    background: var(--bg-card-hover);
     border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 15px 20px;
-    margin-bottom: 12px;
+    border-radius: 8px;
+    padding: 18px 22px;
+    margin-bottom: 15px;
     display: flex;
     justify-content: space-between;
     align-items: center;
-    transition: border-color 0.2s ease;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.list-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: var(--accent-gold);
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
 }
 
 .list-item:hover {
-    border-color: var(--accent-red);
+    border-color: var(--accent-gold);
+    transform: translateX(4px);
+    box-shadow: 0 4px 15px var(--shadow-gold);
+}
+
+.list-item:hover::before {
+    transform: scaleY(1);
 }
 
 .list-item.blue-hover:hover {
-    border-color: var(--accent-blue);
+    border-color: var(--accent-gold-light);
+}
+
+.list-item.blue-hover::before {
+    background: var(--accent-gold-light);
 }
 
 .item-info {
-    padding-right: 10px;
+    padding-right: 15px;
+    flex: 1;
 }
 
 .item-info b {
     display: block;
     color: var(--text-white);
-    font-size: 1.05rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    margin-bottom: 4px;
 }
 
 .item-info span {
     display: block;
     color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-top: 2px;
+    font-size: 0.9rem;
+    line-height: 1.5;
 }
 
-/* Кнопки «Изучить» и действия */
+/* Кнопки «Изучить» и действия - современный золотой стиль */
 .view-btn {
     background: transparent;
-    border: 1px solid var(--accent-red);
-    color: var(--accent-red);
-    padding: 8px 18px;
-    border-radius: 4px;
+    border: 1.5px solid var(--accent-gold);
+    color: var(--accent-gold);
+    padding: 10px 20px;
+    border-radius: 6px;
     cursor: pointer;
-    font-weight: 700;
-    font-size: 0.8rem;
+    font-weight: 600;
+    font-size: 0.85rem;
     text-transform: uppercase;
-    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
     white-space: nowrap;
     text-decoration: none;
     display: inline-block;
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.view-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.2);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.view-btn:hover::before {
+    width: 300px;
+    height: 300px;
 }
 
 .view-btn:hover {
-    background: var(--accent-red);
-    color: #fff;
+    background: var(--accent-gold);
+    color: #0a0a0a;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-gold);
 }
 
 .view-btn.blue-btn {
-    border-color: var(--accent-blue);
-    color: var(--accent-blue);
+    border-color: var(--accent-gold-light);
+    color: var(--accent-gold-light);
 }
 
 .view-btn.blue-btn:hover {
-    background: var(--accent-blue);
-    color: #fff;
+    background: var(--accent-gold-light);
+    color: #0a0a0a;
 }
 
-/* Главная кнопка отбора */
+/* Главная кнопка отбора - золотой градиент */
 .btn-link {
     display: inline-block;
-    background-color: var(--accent-red);
-    color: #fff;
-    padding: 15px 35px;
-    border-radius: 6px;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+    color: #0a0a0a;
+    padding: 16px 40px;
+    border-radius: 8px;
     font-weight: 700;
     text-transform: uppercase;
-    font-size: 0.9rem;
-    letter-spacing: 1px;
+    font-size: 0.95rem;
+    letter-spacing: 1.5px;
     text-decoration: none;
-    transition: opacity 0.2s ease;
-    box-shadow: 0 4px 15px rgba(255, 74, 74, 0.25);
-    width: auto;
+    transition: all 0.3s ease;
+    box-shadow: 0 6px 20px var(--shadow-gold);
+    border: 1px solid var(--accent-gold-light);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-link::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+    transition: left 0.6s ease;
+}
+
+.btn-link:hover::before {
+    left: 100%;
 }
 
 .btn-link:hover {
-    opacity: 0.9;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
 }
 
 /* Контейнер для адаптивной прокрутки таблицы */
@@ -294,22 +434,24 @@ p {
     width: 100%;
     overflow-x: auto;
     -webkit-overflow-scrolling: touch;
-    margin: 20px 0;
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
+    margin: 25px 0;
+    border: 1px solid var(--border-gold);
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
 }
 
 .pdf-table {
     width: 100%;
     border-collapse: collapse;
-    font-size: 0.9rem;
+    font-size: 0.95rem;
     min-width: 550px; /* Гарантирует, что на мобилках таблица сохранит читаемый вид при скролле */
 }
 
-.pdf-table th, .pdf-table td {
+.pdf-table th,
+.pdf-table td {
     border: none;
     border-bottom: 1px solid var(--border-color);
-    padding: 12px 15px;
+    padding: 14px 18px;
     text-align: left;
 }
 
@@ -318,11 +460,25 @@ p {
 }
 
 .pdf-table th {
-    background-color: var(--input-bg);
-    color: var(--accent-red);
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.15) 0%, rgba(212, 175, 55, 0.05) 100%);
+    color: var(--accent-gold);
     text-transform: uppercase;
-    font-size: 0.8rem;
-    letter-spacing: 1px;
+    font-size: 0.85rem;
+    letter-spacing: 1.5px;
+    font-weight: 700;
+    border-bottom: 2px solid var(--accent-gold);
+}
+
+.pdf-table tbody tr {
+    transition: background 0.2s ease;
+}
+
+.pdf-table tbody tr:hover {
+    background: rgba(212, 175, 55, 0.05);
+}
+
+.pdf-table tbody td {
+    color: var(--text-white);
 }
 
 /* --- ПОЛНОСТЬЮ АДАПТИВНЫЕ МОДАЛЬНЫЕ ОКНА --- */
@@ -333,11 +489,18 @@ p {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.85);
+    backdrop-filter: blur(5px);
     z-index: 1000;
     justify-content: center;
     align-items: center;
-    padding: 12px; /* Отступы от краев экрана телефона */
+    padding: 15px; /* Отступы от краев экрана телефона */
+    animation: fadeInOverlay 0.3s ease;
+}
+
+@keyframes fadeInOverlay {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 .modal-overlay.active {
@@ -345,92 +508,152 @@ p {
 }
 
 .modal-window {
-    background: var(--bg-card);
-    border: 1px solid var(--border-color);
-    border-radius: 10px;
+    background: linear-gradient(135deg, var(--bg-card) 0%, #1a1a1a 100%);
+    border: 1px solid var(--accent-gold);
+    border-radius: 12px;
     width: 100%;
-    max-width: 600px;
+    max-width: 650px;
     max-height: 85vh; /* Окно никогда не вылезет за пределы высоты экрана */
     overflow-y: auto; /* Внутренний вертикальный скролл */
-    padding: 25px;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.5);
+    padding: 30px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px var(--shadow-gold);
     -webkit-overflow-scrolling: touch;
+    animation: slideUp 0.4s ease;
+}
+
+@keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 .modal-window h2 {
-    margin-bottom: 15px;
-    font-size: 1.3rem;
-    border-left-width: 3px;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
+    border-left-width: 4px;
+    padding-left: 18px;
 }
 
 .modal-window h3 {
-    font-size: 1rem;
-    margin-top: 20px;
+    font-size: 1.15rem;
+    margin-top: 25px;
+    color: var(--accent-gold-light);
+}
+
+.modal-window p {
+    color: var(--text-white);
+    line-height: 1.7;
 }
 
 .modal-window ul {
-    padding-left: 18px;
-    margin: 10px 0;
+    padding-left: 20px;
+    margin: 15px 0;
 }
 
 .modal-window li {
-    margin-bottom: 6px;
-    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-size: 0.95rem;
+    line-height: 1.6;
+}
+
+.modal-window li::marker {
+    color: var(--accent-gold);
 }
 
 .modal-close-btn {
-    background: var(--accent-red);
-    color: #fff;
+    background: linear-gradient(135deg, var(--accent-gold) 0%, var(--accent-gold-dark) 100%);
+    color: #0a0a0a;
     border: none;
-    padding: 10px 24px;
-    border-radius: 4px;
+    padding: 12px 28px;
+    border-radius: 6px;
     font-weight: 700;
     text-transform: uppercase;
     cursor: pointer;
     float: right;
-    margin-top: 15px;
-    font-size: 0.8rem;
-    width: auto;
+    margin-top: 20px;
+    font-size: 0.85rem;
+    letter-spacing: 1px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 12px var(--shadow-gold);
+}
+
+.modal-close-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 18px rgba(212, 175, 55, 0.4);
+    background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
 }
 
 .modal-close-btn.blue-btn {
-    background: var(--accent-blue);
+    background: linear-gradient(135deg, var(--accent-gold-light) 0%, var(--accent-gold) 100%);
 }
 
 /* --- МЕДИА-ЗАПРОСЫ ДЛЯ СМАРТФОНОВ (ЭКРАНЫ МЕНЬШЕ 650px) --- */
 @media (max-width: 650px) {
-    header { padding: 25px 10px; }
-    header h1 { font-size: 1.9rem; }
-    header p { font-size: 0.75rem; letter-spacing: 2px; }
+    header { 
+        padding: 30px 15px;
+    }
+    
+    header h1 { 
+        font-size: 2rem;
+        letter-spacing: 2px;
+    }
+    
+    header p { 
+        font-size: 0.8rem; 
+        letter-spacing: 2px;
+    }
 
     .theme-toggle {
         position: static;
         margin: 15px auto 0;
     }
 
-    .tab-btn { padding: 14px 15px; font-size: 0.8rem; }
-    .tab-content { padding: 20px 15px; border-radius: 6px; }
+    .tab-btn { 
+        padding: 15px 16px; 
+        font-size: 0.8rem; 
+        letter-spacing: 1px;
+    }
+    
+    .tab-content { 
+        padding: 25px 18px; 
+        border-radius: 10px;
+    }
 
-    h2 { font-size: 1.25rem; margin-bottom: 15px; }
-    h3 { font-size: 1.05rem; }
-    p { font-size: 0.95rem; }
+    h2 { 
+        font-size: 1.3rem; 
+        margin-bottom: 18px;
+        padding-left: 12px;
+    }
+    
+    h3 { 
+        font-size: 1.1rem; 
+    }
+    
+    p { 
+        font-size: 0.95rem; 
+    }
 
     /* Перестраиваем плашки документов/обновлений в вертикальный стек */
     .list-item {
         flex-direction: column;
         align-items: stretch; /* Растягиваем элементы на всю ширину */
-        padding: 15px;
+        padding: 18px;
     }
 
     .item-info {
         padding-right: 0;
-        margin-bottom: 12px; /* Отступ между текстом и кнопкой */
+        margin-bottom: 15px; /* Отступ между текстом и кнопкой */
     }
 
     .view-btn {
         width: 100%; /* Кнопка становится широкой и удобной для тапа */
         text-align: center;
-        padding: 10px;
+        padding: 12px;
     }
 
     .btn-link {
@@ -439,12 +662,31 @@ p {
     }
 
     .modal-window {
-        padding: 20px 15px;
+        padding: 25px 18px;
     }
     
     .modal-close-btn {
         width: 100%; /* Кнопка ОК в модалке тоже на весь экран */
         text-align: center;
         margin-top: 20px;
+    }
+    
+    .modal-window h2 {
+        font-size: 1.3rem;
+    }
+}
+
+/* Дополнительные улучшения для десктопа */
+@media (min-width: 651px) {
+    .container {
+        margin-top: 40px;
+    }
+    
+    .tab-content {
+        padding: 40px 35px;
+    }
+    
+    .list-item {
+        padding: 20px 25px;
     }
 }

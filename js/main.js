@@ -68,20 +68,12 @@ fetch('data/news.json')
             const newsItem = document.createElement('div');
             newsItem.className = 'list-item blue-hover';
             
-            let fileButton = '';
-            if (news.file) {
-                fileButton = `<a href="${news.file}" class="view-btn blue-btn" target="_blank" download>📄 Скачать PDF</a>`;
-            }
-            
             newsItem.innerHTML = `
                 <div class="item-info">
                     <b>${news.title}</b>
                     <span>${news.date} — ${news.description}</span>
                 </div>
-                <div style="display: flex; gap: 8px; flex-wrap: wrap;">
-                    <button class="view-btn blue-btn" onclick="openNewsModal(${index})">Изучить</button>
-                    ${fileButton}
-                </div>
+                <button class="view-btn blue-btn" onclick="openNewsModal(${index})">Изучить</button>
             `;
             newsList.appendChild(newsItem);
         });
