@@ -29,41 +29,58 @@ function closeModalOnOverlay(event, modalId) {
     }
 }
 
+// ============================================
+// ТУМБЛЕР ТЕМ (ВКЛЮЧИТЬ/ВЫКЛЮЧИТЬ ХАКЕРСКУЮ ТЕМУ)
+// ============================================
+// Установите true для включения хакерской темы
+// Установите false для отключения (только тёмная тема)
+const ENABLE_HACKER_THEME = false;
+
 // --- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ---
 function initThemeToggle() {
     const themeToggle = document.querySelector('.theme-toggle');
-    if (!themeToggle) return;
-
-    const themes = ['dark', 'hacker'];
-    const themeIcons = {
-        'dark': '☀️',
-        'hacker': '💻'
-    };
-    const themeLabels = {
-        'dark': 'ТЁМНАЯ',
-        'hacker': 'ХАКЕР'
-    };
-
-    let currentThemeIndex = parseInt(localStorage.getItem('themeIndex')) || 0;
-    const savedTheme = localStorage.getItem('theme') || 'dark';
     
-    document.documentElement.setAttribute('data-theme', savedTheme);
-    updateThemeIcon(savedTheme, themeIcons, themeLabels);
+    // Если хакерская тема отключена в коде - убираем кнопку
+    if (!ENABLE_HACKER_THEME && themeToggle) {
+        themeToggle.style.display = 'none';
+        // Устанавливаем только тёмную тему
+        document.documentElement.setAttribute('data-theme', 'dark');
+        return;
+    }
+    
+    // Если хакерская тема включена
+    if (themeToggle) {
+        const themes = ['dark', 'hacker'];
+        const themeIcons = {
+            'dark': '☀️',
+            'hacker': '💻'
+        };
+        const themeLabels = {
+            'dark': 'ТЁМНАЯ',
+            'hacker': 'ХАКЕР'
+        };
 
-    themeToggle.addEventListener('click', () => {
-        currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-        const newTheme = themes[currentThemeIndex];
+        let currentThemeIndex = parseInt(localStorage.getItem('themeIndex')) || 0;
+        const savedTheme = localStorage.getItem('theme') || 'dark';
         
-        document.documentElement.setAttribute('data-theme', newTheme);
-        localStorage.setItem('theme', newTheme);
-        localStorage.setItem('themeIndex', currentThemeIndex);
-        updateThemeIcon(newTheme, themeIcons, themeLabels);
-        
-        // Вибрация при переключении на хакерскую тему
-        if (newTheme === 'hacker' && navigator.vibrate) {
-            navigator.vibrate([100, 50, 100]);
-        }
-    });
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeIcon(savedTheme, themeIcons, themeLabels);
+
+        themeToggle.addEventListener('click', () => {
+            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
+            const newTheme = themes[currentThemeIndex];
+            
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            localStorage.setItem('themeIndex', currentThemeIndex);
+            updateThemeIcon(newTheme, themeIcons, themeLabels);
+            
+            // Вибрация при переключении на хакерскую тему
+            if (newTheme === 'hacker' && navigator.vibrate) {
+                navigator.vibrate([100, 50, 100]);
+            }
+        });
+    }
 }
 
 function updateThemeIcon(theme, themeIcons, themeLabels) {
