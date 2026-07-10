@@ -63,8 +63,10 @@ body {
     top: 20px;
     left: 20px;
     z-index: 1001;
-    background: var(--surface);
-    border: 1px solid var(--line);
+    background: rgba(17, 17, 17, 0.6);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(34, 34, 34, 0.5);
     width: 44px;
     height: 44px;
     display: flex;
@@ -74,6 +76,11 @@ body {
     gap: 5px;
     cursor: pointer;
     transition: all 0.3s;
+}
+
+.menu-toggle:hover {
+    background: rgba(17, 17, 17, 0.9);
+    border-color: var(--line);
 }
 
 .menu-toggle span {
@@ -895,6 +902,9 @@ p {
         height: 38px;
         top: 12px;
         left: 12px;
+        background: rgba(17, 17, 17, 0.5);
+        backdrop-filter: blur(6px);
+        -webkit-backdrop-filter: blur(6px);
     }
 
     .menu-toggle span {
