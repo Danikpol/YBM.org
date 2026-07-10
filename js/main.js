@@ -1,242 +1,209 @@
-function openTab(evt, tabName) {
-    var i, tabcontent, tablinks;
-    tabcontent = document.getElementsByClassName("tab-content");
-    for (i = 0; i < tabcontent.length; i++) {
-        tabcontent[i].className = tabcontent[i].className.replace(" active", "");
-    }
-    tablinks = document.getElementsByClassName("tab-btn");
-    for (i = 0; i < tablinks.length; i++) {
-        tablinks[i].className = tablinks[i].className.replace(" active", "");
-    }
-    document.getElementById(tabName).className += " active";
-    evt.currentTarget.className += " active";
-    window.scrollTo({top: 0, behavior: 'smooth'});
-}
-
-function openModal(modalId) {
-    document.getElementById(modalId).classList.add('active');
-    document.body.style.overflow = 'hidden';
-}
-
-function closeModal(modalId) {
-    document.getElementById(modalId).classList.remove('active');
-    document.body.style.overflow = 'auto';
-}
-
-function closeModalOnOverlay(event, modalId) {
-    if (event.target.id === modalId) {
-        closeModal(modalId);
-    }
-}
-
 // ============================================
-// ТУМБЛЕР ТЕМ (ВКЛЮЧИТЬ/ВЫКЛЮЧИТЬ ХАКЕРСКУЮ ТЕМУ)
+// МОДЕЛЬ 4 — ОДНА СТРАНИЦА, REVEAL, СКРОЛЛ
 // ============================================
-// Установите true для включения хакерской темы
-// Установите false для отключения (только тёмная тема)
-const ENABLE_HACKER_THEME = false;
 
-// --- ПЕРЕКЛЮЧАТЕЛЬ ТЕМЫ ---
-function initThemeToggle() {
-    const themeToggle = document.querySelector('.theme-toggle');
-    
-    // Если хакерская тема отключена в коде - убираем кнопку
-    if (!ENABLE_HACKER_THEME && themeToggle) {
-        themeToggle.style.display = 'none';
-        // Устанавливаем только тёмную тему
-        document.documentElement.setAttribute('data-theme', 'dark');
-        return;
-    }
-    
-    // Если хакерская тема включена
-    if (themeToggle) {
-        const themes = ['dark', 'hacker'];
-        const themeIcons = {
-            'dark': '☀️',
-            'hacker': '💻'
-        };
-        const themeLabels = {
-            'dark': 'ТЁМНАЯ',
-            'hacker': 'ХАКЕР'
-        };
+// --- МЕНЮ-ГАМБУРГЕР ---
+function toggleMenu() {
+    const menu = document.getElementById('sideMenu');
+    const overlay = document.getElementById('menuOverlay');
+    const toggle = document.getElementById('menuToggle');
+    menu.classList.toggle('active');
+    overlay.classList.toggle('active');
+    toggle.classList.toggle('active');
+}
 
-        let currentThemeIndex = parseInt(localStorage.getItem('themeIndex')) || 0;
-        const savedTheme = localStorage.getItem('theme') || 'dark';
-        
-        document.documentElement.setAttribute('data-theme', savedTheme);
-        updateThemeIcon(savedTheme, themeIcons, themeLabels);
+// --- ПРОГРЕСС-БАР ---
+function initProgressBar() {
+    const bar = document.getElementById('progressBar');
+    window.addEventListener('scroll', () => {
+        const scrollTop = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = (scrollTop / docHeight) * 100;
+        bar.style.width = progress + '%';
+    });
+}
 
-        themeToggle.addEventListener('click', () => {
-            currentThemeIndex = (currentThemeIndex + 1) % themes.length;
-            const newTheme = themes[currentThemeIndex];
-            
-            document.documentElement.setAttribute('data-theme', newTheme);
-            localStorage.setItem('theme', newTheme);
-            localStorage.setItem('themeIndex', currentThemeIndex);
-            updateThemeIcon(newTheme, themeIcons, themeLabels);
-            
-            // Вибрация при переключении на хакерскую тему
-            if (newTheme === 'hacker' && navigator.vibrate) {
-                navigator.vibrate([100, 50, 100]);
+// --- ТАЙПРАЙТЕР ---
+function initTypewriter() {
+    const el = document.getElementById('typewriter');
+    if (!el) return;
+    const text = 'Ты не один такой.\nМы есть.';
+    let index = 0;
+    let isDeleting = false;
+    let currentText = '';
+
+    function type() {
+        if (!isDeleting) {
+            if (index < text.length) {
+                const char = text[index];
+                if (char === '\n') {
+                    currentText += '<br>';
+                } else {
+                    currentText += char;
+                }
+                el.innerHTML = currentText;
+                index++;
+                setTimeout(type, 40 + Math.random() * 60);
+            } else {
+                // Дольше держим текст — 5 секунд вместо 3
+                setTimeout(() => {
+                    isDeleting = true;
+                    type();
+                }, 5000);
             }
-        });
+        } else {
+            if (currentText.length > 0) {
+                if (currentText.endsWith('<br>')) {
+                    currentText = currentText.slice(0, -4);
+                } else {
+                    currentText = currentText.slice(0, -1);
+                }
+                el.innerHTML = currentText;
+                index--;
+                setTimeout(type, 20 + Math.random() * 30);
+            } else {
+                isDeleting = false;
+                index = 0;
+                setTimeout(type, 2000);
+            }
+        }
     }
+    type();
 }
 
-function updateThemeIcon(theme, themeIcons, themeLabels) {
-    const icon = document.querySelector('.theme-toggle .icon');
-    const label = document.querySelector('.theme-toggle span');
-    if (icon) {
-        icon.textContent = themeIcons[theme] || '☀️';
+// --- ЧАСТИЦЫ ---
+function initParticles() {
+    const canvas = document.getElementById('particles');
+    if (!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let mouseX = 0, mouseY = 0;
+
+    function resize() {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
     }
-    if (label) {
-        label.textContent = themeLabels[theme] || 'ТЕМА';
+    resize();
+    window.addEventListener('resize', resize);
+
+    class Particle {
+        constructor() {
+            this.reset();
+        }
+        reset() {
+            this.x = Math.random() * canvas.width;
+            this.y = Math.random() * canvas.height;
+            this.size = Math.random() * 2 + 0.5;
+            this.speedX = (Math.random() - 0.5) * 0.5;
+            this.speedY = (Math.random() - 0.5) * 0.5;
+            this.opacity = Math.random() * 0.5 + 0.1;
+        }
+        update() {
+            this.x += this.speedX;
+            this.y += this.speedY;
+            const dx = mouseX - this.x;
+            const dy = mouseY - this.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 200) {
+                const force = (200 - dist) / 200 * 0.02;
+                this.x += dx * force;
+                this.y += dy * force;
+            }
+            if (this.x < 0 || this.x > canvas.width || this.y < 0 || this.y > canvas.height) {
+                this.reset();
+            }
+        }
+        draw() {
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+            ctx.fill();
+        }
     }
+
+    for (let i = 0; i < 80; i++) particles.push(new Particle());
+
+    function drawLines() {
+        for (let i = 0; i < particles.length; i++) {
+            for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 150) {
+                    ctx.beginPath();
+                    ctx.moveTo(particles[i].x, particles[i].y);
+                    ctx.lineTo(particles[j].x, particles[j].y);
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${0.05 * (1 - dist / 150)})`;
+                    ctx.stroke();
+                }
+            }
+        }
+    }
+
+    function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => { p.update(); p.draw(); });
+        drawLines();
+        requestAnimationFrame(animate);
+    }
+
+    document.addEventListener('mousemove', (e) => { mouseX = e.clientX; mouseY = e.clientY; });
+    animate();
 }
 
-// --- ЗАГРУЗКА НОВОСТЕЙ ИЗ JSON (если элемент существует) ---
-let loadedNews = [];
-
-const newsListElement = document.getElementById('newsList');
-if (newsListElement) {
-    fetch('data/news.json')
-        .then(response => response.json())
-        .then(data => {
-            loadedNews = data;
-            
-            data.forEach((news, index) => {
-                const newsItem = document.createElement('div');
-                newsItem.className = 'list-item blue-hover';
-                
-                newsItem.innerHTML = `
-                    <div class="item-info">
-                        <b>${news.title}</b>
-                        <span>${news.date} — ${news.description}</span>
-                    </div>
-                    <button class="view-btn blue-btn" onclick="openNewsModal(${index})">Изучить</button>
-                `;
-                newsListElement.appendChild(newsItem);
-            });
-        })
-        .catch(error => {
-            console.error('Ошибка загрузки новостей:', error);
-            newsListElement.innerHTML = '<p class="muted-p">Не удалось загрузить новости. Попробуйте позже.</p>';
-        });
-}
-
-function openNewsModal(index) {
-    const news = loadedNews[index];
-    
-    document.getElementById('modal-news-title').innerText = news.title;
-    document.getElementById('modal-news-date').innerText = news.date;
-    document.getElementById('modal-news-text').innerHTML = news.text;
-    
-    openModal('universal-news-modal');
-}
-
-// --- АНИМАЦИИ ПРИ СКРОЛЛЕ ---
-function initScrollAnimations() {
-    const observerOptions = {
-        threshold: 0.1,
-        rootMargin: '0px 0px -50px 0px'
-    };
-
+// --- REVEAL АНИМАЦИЯ ПРИ СКРОЛЛЕ ---
+function initReveal() {
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.style.opacity = '1';
-                entry.target.style.transform = 'translateY(0)';
+                entry.target.classList.add('visible');
+                // После появления больше не наблюдаем — убираем лаги
+                observer.unobserve(entry.target);
             }
         });
-    }, observerOptions);
-
-    // Наблюдаем за элементами для анимации
-    const animatedElements = document.querySelectorAll('.stat-item, .manifesto-point, .city-item, .list-item, .benefits-list li, .rules-list li');
-    animatedElements.forEach(el => {
-        el.style.opacity = '0';
-        el.style.transform = 'translateY(20px)';
-        el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-        observer.observe(el);
+    }, {
+        threshold: 0.08,
+        rootMargin: '0px 0px -30px 0px'
     });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 }
 
-// --- ИНТЕРАКТИВНЫЕ ЭФФЕКТЫ ---
-function initInteractiveEffects() {
-    // Эффект параллакса для мыши на hero-title
-    const heroTitle = document.querySelector('.hero-title');
-    if (heroTitle) {
-        document.addEventListener('mousemove', (e) => {
-            const x = (window.innerWidth / 2 - e.pageX) / 50;
-            const y = (window.innerHeight / 2 - e.pageY) / 50;
-            heroTitle.style.transform = `translate(${x}px, ${y}px)`;
-        });
-    }
+// --- АКТИВНАЯ ССЫЛКА В МЕНЮ ПРИ СКРОЛЛЕ (с троттлингом) ---
+function initActiveNav() {
+    const sections = document.querySelectorAll('.section');
+    const navLinks = document.querySelectorAll('.side-btn');
+    let ticking = false;
 
-    // Анимация счётчика для статистики
-    const statNumbers = document.querySelectorAll('.stat-number');
-    statNumbers.forEach(stat => {
-        const target = stat.textContent;
-        const numericValue = parseInt(target.replace(/\D/g, ''));
-        const suffix = target.replace(/[0-9]/g, '');
-        
-        if (!isNaN(numericValue)) {
-            let current = 0;
-            const increment = numericValue / 50;
-            const timer = setInterval(() => {
-                current += increment;
-                if (current >= numericValue) {
-                    current = numericValue;
-                    clearInterval(timer);
-                }
-                stat.textContent = Math.floor(current) + suffix;
-            }, 30);
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(() => {
+                let current = '';
+                sections.forEach(section => {
+                    const top = section.offsetTop - 250;
+                    if (window.scrollY >= top) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href') === '#' + current) {
+                        link.classList.add('active');
+                    }
+                });
+                ticking = false;
+            });
+            ticking = true;
         }
     });
-
-    // Эффект ripple для кнопок
-    const buttons = document.querySelectorAll('.btn-link, .view-btn');
-    buttons.forEach(button => {
-        button.addEventListener('click', function(e) {
-            const ripple = document.createElement('span');
-            const rect = this.getBoundingClientRect();
-            const size = Math.max(rect.width, rect.height);
-            const x = e.clientX - rect.left - size / 2;
-            const y = e.clientY - rect.top - size / 2;
-            
-            ripple.style.cssText = `
-                position: absolute;
-                width: ${size}px;
-                height: ${size}px;
-                left: ${x}px;
-                top: ${y}px;
-                background: rgba(255, 255, 255, 0.5);
-                border-radius: 50%;
-                transform: scale(0);
-                animation: rippleEffect 0.6s ease-out;
-                pointer-events: none;
-            `;
-            
-            this.appendChild(ripple);
-            setTimeout(() => ripple.remove(), 600);
-        });
-    });
-
-    // Добавляем CSS для ripple эффекта
-    const style = document.createElement('style');
-    style.textContent = `
-        @keyframes rippleEffect {
-            to {
-                transform: scale(4);
-                opacity: 0;
-            }
-        }
-    `;
-    document.head.appendChild(style);
 }
 
 // --- ИНИЦИАЛИЗАЦИЯ ---
 document.addEventListener('DOMContentLoaded', () => {
-    initThemeToggle();
-    initScrollAnimations();
-    initInteractiveEffects();
+    initProgressBar();
+    initTypewriter();
+    initParticles();
+    initReveal();
+    initActiveNav();
 });
