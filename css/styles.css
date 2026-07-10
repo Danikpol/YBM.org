@@ -1214,6 +1214,23 @@ p {
 
 /* --- МЕДИА-ЗАПРОСЫ ДЛЯ СМАРТФОНОВ (ЭКРАНЫ МЕНЬШЕ 650px) --- */
 @media (max-width: 650px) {
+    /* Скрываем видео на мобильных устройствах */
+    .hero-video {
+        display: none;
+    }
+    
+    /* Убираем overlay на мобильных */
+    .hero-overlay {
+        display: none;
+    }
+    
+    /* Возвращаем обычный фон для hero-section */
+    .hero-section {
+        background: var(--bg-card);
+        min-height: auto;
+    }
+    
+    /* Небольшие корректировки размера для мобильных */
     header { 
         padding: 30px 15px;
     }
@@ -1258,7 +1275,6 @@ p {
         font-size: 0.95rem; 
     }
 
-    /* Hero section на мобилках */
     .hero-title {
         font-size: 1.8rem;
     }
@@ -1267,75 +1283,12 @@ p {
         font-size: 1rem;
     }
 
-    .hero-stats {
-        grid-template-columns: 1fr;
-        gap: 15px;
-    }
-
-    .stat-number {
-        font-size: 1.6rem;
-    }
-
-    /* Manifesto на мобилках */
-    .manifesto-opening {
-        font-size: 1rem;
-        padding: 20px 15px;
-    }
-
-    .manifesto-point {
-        flex-direction: column;
-        gap: 10px;
-        padding: 15px;
-    }
-
-    .point-number {
-        font-size: 1.5rem;
-        min-width: auto;
-    }
-
-    .manifesto-closing {
-        font-size: 1.1rem;
-    }
-
-    /* Regions на мобилках */
-    .cities-grid {
-        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
-        gap: 10px;
-    }
-
-    .map-icon {
-        font-size: 3rem;
-    }
-
-    /* Перестраиваем плашки документов/обновлений в вертикальный стек */
-    .list-item {
-        flex-direction: column;
-        align-items: stretch; /* Растягиваем элементы на всю ширину */
-        padding: 18px;
-    }
-
-    .item-info {
-        padding-right: 0;
-        margin-bottom: 15px; /* Отступ между текстом и кнопкой */
-    }
-
-    .view-btn {
-        width: 100%; /* Кнопка становится широкой и удобной для тапа */
-        text-align: center;
-        padding: 12px;
-    }
-
-    .btn-link {
-        width: 100%; /* Главная кнопка на вступлении тоже во весь экран телефона */
-        text-align: center;
-    }
-
     .modal-window {
         padding: 25px 18px;
     }
     
     .modal-close-btn {
-        width: 100%; /* Кнопка ОК в модалке тоже на весь экран */
+        width: 100%;
         text-align: center;
         margin-top: 20px;
     }
