@@ -13,20 +13,230 @@
     --shadow-gold: rgba(212, 175, 55, 0.15);
 }
 
-/* Светлая тема - чёрно-золотая палитра */
-[data-theme="light"] {
-    --bg-main: #fafafa;        /* Светлый фон */
-    --bg-card: #ffffff;        /* Белый для блоков */
-    --bg-card-hover: #f5f5f5;  /* Ховер для карточек */
-    --accent-gold: #b8941e;    /* Тёмное золото для читаемости */
-    --accent-gold-light: #d4af37; /* Золото для ховеров */
-    --accent-gold-dark: #9a7b1a; /* Более тёмное золото */
-    --text-white: #1a1a1a;     /* Тёмный текст */
-    --text-muted: #666666;     /* Смягченный текст */
-    --border-color: #e0e0e0;   /* Светлые разделительные линии */
-    --border-gold: rgba(184, 148, 30, 0.3);
-    --input-bg: rgba(184, 148, 30, 0.05);
-    --shadow-gold: rgba(184, 148, 30, 0.1);
+/* Хакерская тема - зелёный на чёрном */
+[data-theme="hacker"] {
+    --bg-main: #0a0f0a;        /* Чёрный с зелёным оттенком */
+    --bg-card: #0d140d;        /* Тёмно-зелёный для блоков */
+    --bg-card-hover: #111a11;  /* Ховер для карточек */
+    --accent-gold: #00ff41;    /* Неоновый зелёный */
+    --accent-gold-light: #39ff14; /* Светло-зелёный для ховеров */
+    --accent-gold-dark: #00cc33; /* Тёмно-зелёный */
+    --text-white: #00ff41;     /* Зелёный текст */
+    --text-muted: #00aa2a;     /* Смягченный зелёный */
+    --border-color: #1a3a1a;   /* Тёмно-зелёные линии */
+    --border-gold: rgba(0, 255, 65, 0.3);
+    --input-bg: rgba(0, 255, 65, 0.05);
+    --shadow-gold: rgba(0, 255, 65, 0.2);
+}
+
+
+/* Хакерский шрифт для всей темы */
+[data-theme="hacker"] body,
+[data-theme="hacker"] header,
+[data-theme="hacker"] h1,
+[data-theme="hacker"] h2,
+[data-theme="hacker"] h3,
+[data-theme="hacker"] p,
+[data-theme="hacker"] button,
+[data-theme="hacker"] a,
+[data-theme="hacker"] span,
+[data-theme="hacker"] div {
+    font-family: 'Courier New', 'Consolas', 'Monaco', monospace;
+}
+
+/* Глитч-эффект для заголовка МБД */
+[data-theme="hacker"] header h1 {
+    animation: glitch 3s infinite;
+}
+
+@keyframes glitch {
+    0%, 90%, 100% {
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+        transform: translate(0);
+    }
+    92% {
+        text-shadow: -2px 0 #ff0040, 2px 0 #00ffff;
+        transform: translate(-2px, 1px);
+    }
+    94% {
+        text-shadow: 2px 0 #ff0040, -2px 0 #00ffff;
+        transform: translate(2px, -1px);
+    }
+    96% {
+        text-shadow: -1px 0 #ff0040, 1px 0 #00ffff;
+        transform: translate(1px, 2px);
+    }
+    98% {
+        text-shadow: 1px 0 #ff0040, -1px 0 #00ffff;
+        transform: translate(-1px, -2px);
+    }
+}
+
+/* Глитч-эффект для hero-title */
+[data-theme="hacker"] .hero-title {
+    animation: glitchText 2s infinite;
+}
+
+@keyframes glitchText {
+    0%, 85%, 100% {
+        text-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+        transform: translate(0);
+    }
+    87% {
+        text-shadow: -3px 0 #ff0040, 3px 0 #00ffff;
+        transform: translate(-3px, 0);
+    }
+    89% {
+        text-shadow: 3px 0 #ff0040, -3px 0 #00ffff;
+        transform: translate(3px, 0);
+    }
+    91% {
+        text-shadow: 0 0 20px rgba(0, 255, 65, 0.8);
+        transform: translate(0);
+    }
+}
+
+/* Глитч-эффект для мотивационного текста */
+[data-theme="hacker"] .motivation-text {
+    animation: glitchMotivation 4s infinite;
+}
+
+@keyframes glitchMotivation {
+    0%, 88%, 100% {
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
+    }
+    90% {
+        text-shadow: -2px 0 #ff0040, 2px 0 #00ffff;
+        letter-spacing: 3px;
+    }
+    92% {
+        text-shadow: 2px 0 #ff0040, -2px 0 #00ffff;
+        letter-spacing: 1px;
+    }
+    94% {
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.6);
+        letter-spacing: 2px;
+    }
+}
+
+/* Сканлайн-эффект для всей страницы */
+[data-theme="hacker"] body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+        transparent 50%,
+        rgba(0, 255, 65, 0.03) 50%
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 9999;
+    animation: scanline 8s linear infinite;
+}
+
+@keyframes scanline {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(10px);
+    }
+}
+
+/* Мигающий курсор для текста */
+[data-theme="hacker"] .hero-subtitle::after {
+    content: '█';
+    animation: blink 1s infinite;
+    margin-left: 2px;
+}
+
+@keyframes blink {
+    0%, 50% {
+        opacity: 1;
+    }
+    51%, 100% {
+        opacity: 0;
+    }
+}
+
+/* Глитч-эффект для кнопок */
+[data-theme="hacker"] .btn-link {
+    animation: glitchBtn 3s infinite;
+    border: 2px solid #00ff41;
+    box-shadow: 0 0 20px rgba(0, 255, 65, 0.5), inset 0 0 20px rgba(0, 255, 65, 0.1);
+}
+
+@keyframes glitchBtn {
+    0%, 88%, 100% {
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.5), inset 0 0 20px rgba(0, 255, 65, 0.1);
+    }
+    90% {
+        box-shadow: -3px 0 #ff0040, 3px 0 #00ffff, 0 0 30px rgba(0, 255, 65, 0.8);
+        transform: translate(-2px, 0);
+    }
+    92% {
+        box-shadow: 3px 0 #ff0040, -3px 0 #00ffff, 0 0 30px rgba(0, 255, 65, 0.8);
+        transform: translate(2px, 0);
+    }
+    94% {
+        box-shadow: 0 0 20px rgba(0, 255, 65, 0.5), inset 0 0 20px rgba(0, 255, 65, 0.1);
+        transform: translate(0);
+    }
+}
+
+/* Матричный эффект для фона */
+[data-theme="hacker"] .hero-section::before {
+    background: radial-gradient(circle at center, rgba(0, 255, 65, 0.1) 0%, transparent 70%);
+    animation: matrixGlow 3s ease-in-out infinite;
+}
+
+@keyframes matrixGlow {
+    0%, 100% {
+        opacity: 0.3;
+    }
+    50% {
+        opacity: 0.6;
+    }
+}
+
+/* Глитч для заголовков h2 */
+[data-theme="hacker"] h2 {
+    animation: glitchHeading 5s infinite;
+}
+
+@keyframes glitchHeading {
+    0%, 90%, 100% {
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+    }
+    92% {
+        text-shadow: -2px 0 #ff0040, 2px 0 #00ffff;
+    }
+    94% {
+        text-shadow: 2px 0 #ff0040, -2px 0 #00ffff;
+    }
+    96% {
+        text-shadow: 0 0 10px rgba(0, 255, 65, 0.5);
+    }
+}
+
+/* Эффект мерцания для навигации */
+[data-theme="hacker"] .nav-container {
+    border-bottom: 1px solid #00ff41;
+    box-shadow: 0 2px 10px rgba(0, 255, 65, 0.3);
+}
+
+[data-theme="hacker"] .tab-btn.active {
+    color: #00ff41;
+    background: rgba(0, 255, 65, 0.1);
+    text-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
+}
+
+[data-theme="hacker"] .tab-btn::after {
+    background: #00ff41;
+    box-shadow: 0 0 10px rgba(0, 255, 65, 0.8);
 }
 
 /* Общие системные настройки для мобилок */
@@ -145,6 +355,8 @@ header p {
     overflow-x: auto;
     scrollbar-width: none; /* Прячем скроллбар в Firefox */
     -webkit-overflow-scrolling: touch; /* Плавный скролл пальцем на iOS */
+    justify-content: center; /* Центрируем вкладки */
+    flex-wrap: nowrap; /* Запрещаем перенос на новую строку */
 }
 
 .nav-tabs::-webkit-scrollbar {
@@ -264,7 +476,415 @@ p {
     font-style: italic;
 }
 
-/* Списки элементов (Документы и Обновления) */
+/* ========== ГЛАВНАЯ СТРАНИЦА (HERO) ========== */
+.hero-section {
+    position: relative;
+    text-align: center;
+    padding: 40px 20px;
+    animation: fadeInUp 0.8s ease;
+    overflow: hidden;
+    min-height: 500px;
+}
+
+.hero-video {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
+    transform: translate(-50%, -50%);
+    object-fit: cover;
+    z-index: 0;
+    opacity: 0.6;
+}
+
+.hero-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        rgba(10, 10, 10, 0.7) 0%,
+        rgba(10, 10, 10, 0.8) 50%,
+        rgba(10, 10, 10, 0.9) 100%
+    );
+    z-index: 1;
+}
+
+.hero-section > *:not(.hero-video):not(.hero-overlay) {
+    position: relative;
+    z-index: 2;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    margin-bottom: 20px;
+    line-height: 1.3;
+    text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    animation: glowPulse 3s ease-in-out infinite;
+}
+
+@keyframes glowPulse {
+    0%, 100% {
+        text-shadow: 0 0 30px rgba(212, 175, 55, 0.3);
+    }
+    50% {
+        text-shadow: 0 0 50px rgba(212, 175, 55, 0.6);
+    }
+}
+
+.hero-subtitle {
+    font-size: 1.2rem;
+    color: var(--text-muted);
+    margin-bottom: 40px;
+    font-style: italic;
+}
+
+.hero-motivation {
+    margin: 30px 0;
+    padding: 20px 25px;
+    background: var(--bg-card-hover);
+    border-radius: 10px;
+    border: 1px solid var(--border-gold);
+    display: inline-block;
+}
+
+.motivation-text {
+    font-size: 1.15rem;
+    color: var(--accent-gold-light);
+    font-weight: 600;
+    letter-spacing: 1px;
+}
+
+.hero-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 20px;
+    margin: 40px 0;
+}
+
+.stat-item {
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border-gold);
+    border-radius: 12px;
+    padding: 25px 20px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
+.stat-item:hover {
+    transform: translateY(-5px);
+    border-color: var(--accent-gold);
+    box-shadow: 0 8px 25px var(--shadow-gold);
+}
+
+.stat-item:hover::before {
+    transform: scaleX(1);
+}
+
+.stat-number {
+    display: block;
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    margin-bottom: 8px;
+    text-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+}
+
+.stat-label {
+    display: block;
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.hero-cta {
+    margin-top: 40px;
+    animation: fadeIn 1s ease 0.5s both;
+    position: relative;
+}
+
+.hero-free {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    color: var(--accent-gold-light);
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    animation: fadeInUp 0.8s ease 1s both;
+}
+
+/* ========== О ДВИЖЕНИИ ========== */
+.about-story {
+    margin-bottom: 35px;
+}
+
+.story-intro {
+    font-size: 1.15rem;
+    color: var(--accent-gold-light);
+    margin-bottom: 25px;
+    padding: 20px;
+    background: var(--bg-card-hover);
+    border-left: 3px solid var(--accent-gold);
+    border-radius: 8px;
+}
+
+.about-benefits {
+    margin: 35px 0;
+    padding: 25px;
+    background: var(--bg-card-hover);
+    border-radius: 12px;
+    border: 1px solid var(--border-gold);
+}
+
+.benefits-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+.benefits-list li {
+    padding: 12px 0 12px 30px;
+    position: relative;
+    color: var(--text-white);
+    line-height: 1.6;
+}
+
+.benefits-list li::before {
+    content: '▸';
+    position: absolute;
+    left: 10px;
+    color: var(--accent-gold);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+.about-cta {
+    text-align: center;
+    margin-top: 35px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border-color);
+}
+
+/* ========== МАНИФЕСТ ========== */
+.manifesto-content {
+    animation: fadeIn 0.6s ease;
+}
+
+.manifesto-opening {
+    font-size: 1.15rem;
+    color: var(--accent-gold-light);
+    padding: 25px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+    border-left: 4px solid var(--accent-gold);
+    border-radius: 8px;
+    margin-bottom: 35px;
+    font-style: italic;
+    line-height: 1.8;
+}
+
+.manifesto-points {
+    margin: 30px 0;
+}
+
+.manifesto-point {
+    display: flex;
+    gap: 20px;
+    margin-bottom: 30px;
+    padding: 20px;
+    background: var(--bg-card-hover);
+    border-radius: 12px;
+    border: 1px solid var(--border-color);
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.manifesto-point::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(180deg, var(--accent-gold), var(--accent-gold-light));
+    transform: scaleY(0);
+    transition: transform 0.3s ease;
+}
+
+.manifesto-point:hover {
+    border-color: var(--accent-gold);
+    transform: translateX(5px);
+    box-shadow: 0 4px 20px var(--shadow-gold);
+}
+
+.manifesto-point:hover::before {
+    transform: scaleY(1);
+}
+
+.point-number {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--accent-gold);
+    opacity: 0.6;
+    min-width: 50px;
+    text-align: center;
+    line-height: 1;
+}
+
+.manifesto-point p {
+    margin: 0;
+    flex: 1;
+}
+
+.manifesto-closing {
+    text-align: center;
+    font-size: 1.3rem;
+    color: var(--accent-gold);
+    padding: 25px;
+    margin-top: 35px;
+    border-top: 2px solid var(--accent-gold);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ========== РЕГИОНЫ ========== */
+.regions-intro {
+    margin-bottom: 30px;
+}
+
+.regions-map-placeholder {
+    text-align: center;
+    padding: 40px 30px;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.1) 0%, rgba(212, 175, 55, 0.05) 100%);
+    border: 2px dashed var(--accent-gold);
+    border-radius: 12px;
+    margin: 30px 0;
+    transition: all 0.3s ease;
+}
+
+.regions-map-placeholder:hover {
+    border-style: solid;
+    box-shadow: 0 8px 30px var(--shadow-gold);
+    transform: translateY(-3px);
+}
+
+.map-icon {
+    font-size: 4rem;
+    margin-bottom: 20px;
+    animation: bounce 2s ease-in-out infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
+
+.regions-map-placeholder h3 {
+    margin-top: 0;
+    color: var(--accent-gold);
+}
+
+.regions-list {
+    margin-top: 40px;
+}
+
+.cities-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+    margin-top: 20px;
+}
+
+.city-item {
+    background: var(--bg-card-hover);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 15px;
+    text-align: center;
+    color: var(--text-white);
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    cursor: default;
+}
+
+.city-item:hover {
+    border-color: var(--accent-gold);
+    color: var(--accent-gold);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px var(--shadow-gold);
+}
+
+/* ========== КОНТАКТЫ ========== */
+.contacts-intro {
+    margin-bottom: 25px;
+}
+
+.contacts-info {
+    margin-top: 35px;
+    padding: 25px;
+    background: var(--bg-card-hover);
+    border-radius: 12px;
+    border: 1px solid var(--border-gold);
+}
+
+.rules-list {
+    list-style: none;
+    padding: 0;
+    margin: 20px 0 0 0;
+}
+
+.rules-list li {
+    padding: 10px 0 10px 30px;
+    position: relative;
+    color: var(--text-white);
+}
+
+.rules-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 8px;
+    color: var(--accent-gold);
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
+/* ========== СПИСКИ ЭЛЕМЕНТОВ (Документы и Обновления) ========== */
 .item-list {
     margin: 25px 0;
 }
@@ -638,6 +1258,55 @@ p {
         font-size: 0.95rem; 
     }
 
+    /* Hero section на мобилках */
+    .hero-title {
+        font-size: 1.8rem;
+    }
+
+    .hero-subtitle {
+        font-size: 1rem;
+    }
+
+    .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    /* Manifesto на мобилках */
+    .manifesto-opening {
+        font-size: 1rem;
+        padding: 20px 15px;
+    }
+
+    .manifesto-point {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .point-number {
+        font-size: 1.5rem;
+        min-width: auto;
+    }
+
+    .manifesto-closing {
+        font-size: 1.1rem;
+    }
+
+    /* Regions на мобилках */
+    .cities-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .map-icon {
+        font-size: 3rem;
+    }
+
     /* Перестраиваем плашки документов/обновлений в вертикальный стек */
     .list-item {
         flex-direction: column;
@@ -689,4 +1358,251 @@ p {
     .list-item {
         padding: 20px 25px;
     }
+
+    .hero-title {
+        font-size: 3rem;
+    }
+
+    .manifesto-point {
+        padding: 25px;
+    }
 }
+
+/* Плавные переходы для всех интерактивных элементов */
+button, a, .list-item, .stat-item, .manifesto-point, .city-item, .regions-map-placeholder, .hero-motivation {
+    transition: all 0.3s ease;
+}
+
+/* ========== ДОПОЛНИТЕЛЬНЫЕ АНИМАЦИИ И ИНТЕРАКТИВ ========== */
+
+/* Анимация появления элементов при наведении на manifesto-point */
+.manifesto-point {
+    cursor: pointer;
+}
+
+.manifesto-point:hover .point-number {
+    animation: numberGlow 1s ease-in-out infinite;
+}
+
+@keyframes numberGlow {
+    0%, 100% {
+        opacity: 0.6;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.1);
+    }
+}
+
+/* Анимация для кнопки CTA */
+.btn-link {
+    animation: btnShine 3s ease-in-out infinite;
+}
+
+@keyframes btnShine {
+    0%, 100% {
+        box-shadow: 0 6px 20px var(--shadow-gold);
+    }
+    50% {
+        box-shadow: 0 6px 35px rgba(212, 175, 55, 0.5), 0 0 50px rgba(212, 175, 55, 0.3);
+    }
+}
+
+/* Эффект параллакса для hero-title при наведении */
+.hero-title {
+    animation: glowPulse 3s ease-in-out infinite, float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-8px);
+    }
+}
+
+/* Анимация для навигационных кнопок */
+.tab-btn {
+    position: relative;
+    overflow: hidden;
+}
+
+.tab-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(212, 175, 55, 0.1);
+    transform: translate(-50%, -50%);
+    transition: width 0.5s, height 0.5s;
+}
+
+.tab-btn:hover::before {
+    width: 100px;
+    height: 100px;
+}
+
+/* Анимация для элементов списка */
+.benefits-list li {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.benefits-list li:hover {
+    transform: translateX(8px);
+    color: var(--accent-gold);
+}
+
+.benefits-list li::before {
+    transition: all 0.3s ease;
+}
+
+.benefits-list li:hover::before {
+    transform: scale(1.3);
+}
+
+/* Анимация для правил вступления */
+.rules-list li {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+.rules-list li:hover {
+    transform: translateX(5px);
+    color: var(--accent-gold);
+}
+
+.rules-list li::before {
+    transition: all 0.3s ease;
+}
+
+.rules-list li:hover::before {
+    transform: scale(1.2);
+}
+
+/* Эффект свечения для карты регионов */
+.regions-map-placeholder {
+    position: relative;
+}
+
+.regions-map-placeholder::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.2) 0%, transparent 70%);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.regions-map-placeholder:hover::after {
+    width: 300px;
+    height: 300px;
+}
+
+/* Анимация загрузки для hero-section */
+.hero-section {
+    position: relative;
+}
+
+.hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, transparent 70%);
+    animation: heroGlow 4s ease-in-out infinite;
+    pointer-events: none;
+}
+
+@keyframes heroGlow {
+    0%, 100% {
+        opacity: 0.3;
+        transform: scale(1);
+    }
+    50% {
+        opacity: 0.6;
+        transform: scale(1.1);
+    }
+}
+
+/* Интерактивный эффект для заголовков h2 */
+h2 {
+    position: relative;
+    transition: all 0.3s ease;
+}
+
+/* Анимация для модальных окон */
+.modal-window {
+    animation: slideUp 0.4s ease, modalGlow 2s ease-in-out infinite;
+}
+
+@keyframes modalGlow {
+    0%, 100% {
+        box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 30px var(--shadow-gold);
+    }
+    50% {
+        box-shadow: 0 20px 50px rgba(0,0,0,0.7), 0 0 50px rgba(212, 175, 55, 0.4);
+    }
+}
+
+/* Эффект нажатия для кнопок */
+button:active, .btn-link:active {
+    transform: scale(0.98);
+}
+
+/* Анимация для hero-free текста */
+.hero-free {
+    position: relative;
+    display: inline-block;
+    animation: fadeInUp 0.8s ease 1s both, shimmer 2s linear infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        background-position: -200% center;
+    }
+    100% {
+        background-position: 200% center;
+    }
+}
+
+.hero-free {
+    background: linear-gradient(90deg, var(--accent-gold-light), var(--accent-gold), var(--accent-gold-light));
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Улучшение hover эффекта для навигации */
+.nav-container {
+    position: relative;
+}
+
+.nav-container::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--accent-gold), transparent);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.nav-container:hover::after {
+    opacity: 1;
+}
+
