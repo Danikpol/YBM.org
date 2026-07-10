@@ -84,9 +84,8 @@
 
 ## 📞 Контакты
 
-- **Связь с ядром:** [@g82891y48927kf93](https://t.me/g82891y48927kf93)
+- **Связь с ядром:** [@p2938819u4](https://t.me/p2938819u4)
 - **Бот для вступления:** [@YBM_Union_bot](https://t.me/YBM_Union_bot)
-- **Ядро движения:** [@p2938819u4](https://t.me/p2938819u4)
 
 ### Как вступить
 
@@ -107,6 +106,6 @@
 
 **МБД — Движение тех, кто решил взять своё.**
 
-[Подать заявку](https://t.me/YBM_Union_bot) • [Связаться с ядром](https://t.me/g82891y48927kf93) • [Сайт](https://danikpol.github.io/YBM.org/)
+[Подать заявку](https://t.me/YBM_Union_bot) • [Связаться с ядром](https://t.me/p2938819u4) • [Сайт](https://danikpol.github.io/YBM.org/)
 
 </div>
