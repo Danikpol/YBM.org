@@ -1230,7 +1230,7 @@ p {
         min-height: auto;
     }
     
-    /* Небольшие корректировки размера для мобильных */
+    /* Сохраняем все отступы и анимации */
     header { 
         padding: 30px 15px;
     }
@@ -1281,6 +1281,109 @@ p {
 
     .hero-subtitle {
         font-size: 1rem;
+    }
+
+    /* Сохраняем все анимации и эффекты на мобильных */
+    .hero-motivation {
+        margin: 30px 0;
+        padding: 20px 25px;
+        background: var(--bg-card-hover);
+        border-radius: 10px;
+        border: 1px solid var(--border-gold);
+        display: inline-block;
+    }
+
+    .motivation-text {
+        font-size: 1.15rem;
+        color: var(--accent-gold-light);
+        font-weight: 600;
+        letter-spacing: 1px;
+    }
+
+    .hero-stats {
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin: 40px 0;
+    }
+
+    .stat-item {
+        background: var(--bg-card-hover);
+        border: 1px solid var(--border-gold);
+        border-radius: 12px;
+        padding: 25px 20px;
+        transition: all 0.3s ease;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .stat-item::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--accent-gold), var(--accent-gold-light));
+        transform: scaleX(0);
+        transition: transform 0.3s ease;
+    }
+
+    .stat-item:hover {
+        transform: translateY(-5px);
+        border-color: var(--accent-gold);
+        box-shadow: 0 8px 25px var(--shadow-gold);
+    }
+
+    .stat-item:hover::before {
+        transform: scaleX(1);
+    }
+
+    .stat-number {
+        font-size: 1.6rem;
+    }
+
+    .manifesto-point {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+
+    .point-number {
+        font-size: 1.5rem;
+        min-width: auto;
+    }
+
+    .cities-grid {
+        grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+        gap: 10px;
+    }
+
+    .map-icon {
+        font-size: 3rem;
+    }
+
+    /* Сохраняем все hover-эффекты и анимации для списков */
+    .list-item {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 18px;
+    }
+
+    .item-info {
+        padding-right: 0;
+        margin-bottom: 15px;
+    }
+
+    .view-btn {
+        width: 100%;
+        text-align: center;
+        padding: 12px;
+    }
+
+    .btn-link {
+        width: 100%;
+        text-align: center;
     }
 
     .modal-window {
