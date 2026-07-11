@@ -4,12 +4,12 @@
    ============================================ */
 
 :root {
-    --bg: #0a0a0a;
-    --surface: #111;
-    --surface2: #181818;
-    --line: #222;
+    --bg: #0f0f0f;
+    --surface: #141414;
+    --surface2: #1a1a1a;
+    --line: #252525;
     --text: #eee;
-    --muted: #777;
+    --muted: #999;
     --accent: #fff;
 }
 
@@ -54,7 +54,7 @@ body {
     height: 100%;
     z-index: 0;
     pointer-events: none;
-    opacity: 0.25;
+    opacity: 0.5;
 }
 
 /* ========== MENU ========== */
